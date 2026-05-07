@@ -1,8 +1,9 @@
-import { readFileSync, writeFileSync, unlinkSync } from "node:fs";
-import { join, dirname } from "node:path";
+import { readFileSync, writeFileSync, unlinkSync, existsSync, statSync } from "node:fs";
+import { join, dirname, isAbsolute } from "node:path";
 import { fileURLToPath } from "node:url";
 import { execSync } from "node:child_process";
 import { tmpdir } from "node:os";
+import { randomUUID } from "node:crypto";
 import { joinSession } from "@github/copilot-sdk/extension";
 
 // ============================================================
@@ -14,15 +15,16 @@ import { joinSession } from "@github/copilot-sdk/extension";
 // ---- Load Character Data from JSON ----
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-let CHARACTERS;
-try {
-  CHARACTERS = JSON.parse(
-    readFileSync(join(__dirname, "characters.json"), "utf-8")
-  );
-} catch (err) {
-  console.error(`[Marvel Agents] Failed to load characters.json: ${err.message}`);
-  process.exit(1);
+
+function loadCharacters() {
+  try {
+    return JSON.parse(readFileSync(join(__dirname, "characters.json"), "utf-8"));
+  } catch (err) {
+    console.error(`[Marvel Agents] Failed to load characters.json: ${err.message}`);
+    process.exit(1);
+  }
 }
+const CHARACTERS = loadCharacters();
 
 // ---- Build tool handler for each character from JSON data ----
 
@@ -57,7 +59,7 @@ function setActiveCharacter(sessionId, characterKey) {
     // Evict oldest entry if map gets too large (stale sessions)
     if (activeCharacters.size >= SESSION_MAP_LIMIT && !activeCharacters.has(sessionId)) {
       const oldest = activeCharacters.keys().next().value;
-      activeCharacters.delete(oldest);
+      if (oldest !== undefined) activeCharacters.delete(oldest);
     }
     activeCharacters.set(sessionId, characterKey);
   }
@@ -65,61 +67,41 @@ function setActiveCharacter(sessionId, characterKey) {
 
 // ---- Content Rating System ----
 
-// Exact profanity words/forms only — no suffix matching to avoid false positives (assets, hello, cockpit, etc.)
-const PROFANITY_WORDS = new Set([
-  "fuck", "fucking", "fucked", "fucker", "fuckers", "fucks",
-  "shit", "shits", "shitty", "shitshow", "shitted",
-  "damn", "damned", "damning", "damns",
-  "ass", "asses", "asshole", "assholes",
-  "bitch", "bitches", "bitching", "bitchy",
-  "bastard", "bastards", "bastardized",
-  "crap", "crappy", "craps",
-  "hell",
-  "dick", "dicks", "dickhead", "dickheads",
-  "piss", "pissed", "pissing", "pisses",
-  "cock", "cocks", "cocksucker",
-  "twat", "twats",
-  "wank", "wanks", "wanker", "wankers", "wanking",
-  "bollocks",
-  "arse", "arses", "arsehole", "arseholes",
-  "bloody",
-  "bullshit", "horseshit", "apeshit", "batshit", "dipshit",
-  "unfuck", "unfucked", "unfucking",
-  "motherfucker", "motherfuckers", "motherfucking",
-]);
-const PROFANITY_PATTERN_EXACT = /\b[a-z]+\b/gi;
+// Single source of truth for profanity detection AND commit sanitization.
+// Add new words here — the detection Set is derived automatically.
+const PROFANITY_MAP = {
+  fuck: "heck", fucking: "hecking", fucked: "hecked", fucker: "rascal", fuckers: "rascals", fucks: "hecks",
+  shit: "stuff", shits: "stuff", shitty: "bad", shitshow: "mess", shitted: "messed",
+  damn: "darn", damned: "darned", damning: "darning", damns: "darns",
+  ass: "butt", asses: "butts", asshole: "jerk", assholes: "jerks",
+  bitch: "jerk", bitches: "jerks", bitching: "complaining", bitchy: "cranky",
+  bastard: "scoundrel", bastards: "scoundrels", bastardized: "mangled",
+  crap: "crud", crappy: "cruddy", craps: "cruds",
+  hell: "heck",
+  dick: "jerk", dicks: "jerks", dickhead: "jerk", dickheads: "jerks",
+  piss: "annoy", pissed: "annoyed", pissing: "annoying", pisses: "annoys",
+  cock: "rooster", cocks: "roosters", cocksucker: "jerk",
+  twat: "fool", twats: "fools",
+  wank: "nonsense", wanks: "nonsense", wanker: "fool", wankers: "fools", wanking: "fooling",
+  bollocks: "nonsense",
+  arse: "butt", arses: "butts", arsehole: "jerk", arseholes: "jerks",
+  bloody: "dang",
+  bullshit: "nonsense", horseshit: "nonsense", apeshit: "wild", batshit: "wild", dipshit: "fool",
+  unfuck: "fix", unfucked: "fixed", unfucking: "fixing",
+  motherfucker: "scoundrel", motherfuckers: "scoundrels", motherfucking: "hecking",
+};
+// Exact-match only — no suffix matching to avoid false positives (assets, cockpit, etc.)
+const PROFANITY_WORDS = new Set(Object.keys(PROFANITY_MAP));
 
 function containsProfanity(text) {
-  const words = text.toLowerCase().match(PROFANITY_PATTERN_EXACT) || [];
+  const words = text.toLowerCase().match(/\b[a-z]+\b/gi) || [];
   return words.some(w => PROFANITY_WORDS.has(w));
 }
 
 function sanitizeForCommit(text) {
-  const REPLACEMENTS = {
-    fuck: "heck", fucking: "hecking", fucked: "hecked", fucker: "rascal", fuckers: "rascals", fucks: "hecks",
-    shit: "stuff", shits: "stuff", shitty: "bad", shitshow: "mess", shitted: "messed",
-    damn: "darn", damned: "darned", damning: "darning", damns: "darns",
-    ass: "butt", asses: "butts", asshole: "jerk", assholes: "jerks",
-    bitch: "jerk", bitches: "jerks", bitching: "complaining", bitchy: "cranky",
-    bastard: "scoundrel", bastards: "scoundrels", bastardized: "mangled",
-    crap: "crud", crappy: "cruddy", craps: "cruds",
-    hell: "heck",
-    dick: "jerk", dicks: "jerks", dickhead: "jerk", dickheads: "jerks",
-    piss: "annoy", pissed: "annoyed", pissing: "annoying", pisses: "annoys",
-    cock: "rooster", cocks: "roosters", cocksucker: "jerk",
-    twat: "fool", twats: "fools",
-    wank: "nonsense", wanks: "nonsense", wanker: "fool", wankers: "fools", wanking: "fooling",
-    bollocks: "nonsense",
-    arse: "butt", arses: "butts", arsehole: "jerk", arseholes: "jerks",
-    bloody: "dang",
-    bullshit: "nonsense", horseshit: "nonsense", apeshit: "wild", batshit: "wild", dipshit: "fool",
-    unfuck: "fix", unfucked: "fixed", unfucking: "fixing",
-    motherfucker: "scoundrel", motherfuckers: "scoundrels", motherfucking: "hecking",
-  };
   return text.replace(/\b[a-z]+\b/gi, (word) => {
     const lower = word.toLowerCase();
-    if (REPLACEMENTS[lower]) return REPLACEMENTS[lower];
-    return word;
+    return PROFANITY_MAP[lower] || word;
   });
 }
 
@@ -156,8 +138,8 @@ async function fetchMarvelNews() {
           if (title) headlines.push({ title, link });
         }
       }
-    } catch {
-      // Feed fetch failed silently — not worth crashing over gossip
+    } catch (err) {
+      console.debug(`[Marvel News] Feed fetch failed (${url}):`, err?.message || err);
     }
   }
 
@@ -170,7 +152,12 @@ async function fetchMarvelNews() {
 function getRandomNews(count = 2) {
   const { headlines } = newsCache;
   if (headlines.length === 0) return "";
-  const shuffled = [...headlines].sort(() => Math.random() - 0.5);
+  // Fisher-Yates shuffle for unbiased randomization
+  const shuffled = [...headlines];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
   const picked = shuffled.slice(0, Math.min(count, headlines.length));
   const lines = picked.map(h => `• ${h.title}`).join("\n");
   return `\n\n🗞️ **Latest from the Marvel Multiverse:**\n${lines}`;
@@ -216,6 +203,17 @@ const WORKFLOWS = {
   },
 };
 
+/**
+ * Build orchestration instructions for a multi-agent parallel review.
+ * Returns a prompt string that instructs the LLM to launch background agents
+ * for each character, then synthesize findings as The Watcher.
+ *
+ * @param {{ name: string, emoji: string, agents: string[], description: string }} workflow
+ * @param {string[]} agents - Character keys to include in the review
+ * @param {string} target - File path, code, or concept for agents to analyze
+ * @param {string} [concern] - Optional focus area for all agents
+ * @returns {string} Imperative orchestration instructions for the LLM
+ */
 function buildAssembleResult(workflow, agents, target, concern) {
   const charDetails = agents.map((key, i) => {
     const c = CHARACTERS[key];
@@ -297,6 +295,18 @@ Then wait for ALL to complete before synthesizing.
 ═══════════════════════════════════════════════════════`;
 }
 
+/**
+ * Build orchestration instructions for a two-agent debate with cross-examination.
+ * Round 1: Both agents analyze independently (parallel).
+ * Round 2: Each agent responds to the other's findings (sequential).
+ * Phase 3: The Watcher synthesizes and delivers the verdict.
+ *
+ * @param {string} target - File path, code, or concept for agents to debate
+ * @param {string} key1 - First character key
+ * @param {string} key2 - Second character key
+ * @param {string} [concern] - Optional debate topic
+ * @returns {string|null} Orchestration instructions, or null if characters not found
+ */
 function buildBattleResult(target, key1, key2, concern) {
   const char1 = CHARACTERS[key1];
   const char2 = CHARACTERS[key2];
@@ -507,6 +517,26 @@ Use \`marvel_summon\` to call another character.`;
       const email = char.gitEmail || `${activeKey}@avengers.example`;
       const cwd = args.cwd;
 
+      // P0 Security: validate cwd before any execSync calls
+      if (!cwd || typeof cwd !== "string" || !isAbsolute(cwd)) {
+        return {
+          textResultForLlm: "Invalid repository path — must be an absolute path.",
+          resultType: "failure",
+        };
+      }
+      if (!existsSync(cwd) || !statSync(cwd).isDirectory()) {
+        return {
+          textResultForLlm: `Directory not found: ${cwd}`,
+          resultType: "failure",
+        };
+      }
+      if (!existsSync(join(cwd, ".git"))) {
+        return {
+          textResultForLlm: `Not a git repository: ${cwd}`,
+          resultType: "failure",
+        };
+      }
+
       const GIT_TIMEOUT = 10000; // 10 seconds — if git takes longer, something's wrong
 
       try {
@@ -536,8 +566,8 @@ Use \`marvel_summon\` to call another character.`;
           `Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>`,
         ].join("\n");
 
-        // Write message to temp file to avoid shell injection
-        const msgFile = join(tmpdir(), `marvel-commit-${Date.now()}.txt`);
+        // Write message to temp file to avoid shell injection (crypto-random name prevents races)
+        const msgFile = join(tmpdir(), `marvel-commit-${randomUUID()}.txt`);
         writeFileSync(msgFile, fullMessage, "utf-8");
         try {
           execSync(`git commit -F "${msgFile}"`, { cwd, stdio: "pipe", encoding: "utf-8", timeout: GIT_TIMEOUT });
