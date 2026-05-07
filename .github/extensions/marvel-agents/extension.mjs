@@ -86,6 +86,9 @@ const GIT_EMAILS = {
   magneto:          "erik@genosha.example",
   gambit:           "remy@thieves-guild.example",
   nebula:           "nebula@benatar.example",
+  daredevil:        "matt.murdock@hellskitchen.example",
+  professor_x:      "xavier@xmansion.example",
+  heimdall:         "heimdall@bifrost.example",
 };
 
 // Real user gets co-author credit on every character commit
