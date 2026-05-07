@@ -167,7 +167,7 @@ Specialty: ${char.specialty}
 
 All responses will now channel ${char.name}'s personality and expertise. Their dedicated tool \`${char.toolName}\` is available for focused analysis.
 
-Use \`marvel_dismiss\` to return to normal mode.${getRandomTrivia(char)}${getRandomNews(1)}`;
+Use \`marvel_dismiss\` to return to normal mode.${getRandomTrivia(char)}${args.character === "deadpool" ? getRandomNews(1) : ""}`;
     },
   },
   {
@@ -378,11 +378,14 @@ INSTEAD, ${char.name} would say things like their character naturally would — 
 
 If ANY piece of text you're about to generate sounds like it came from a help desk chatbot instead of ${char.name}, REWRITE IT. No exceptions. The user is paying attention to EVERY line of output.`;
 
-      // Fetch fresh news (non-blocking, uses cache)
-      const headlines = await fetchMarvelNews();
-      const newsContext = headlines.length > 0
-        ? `\n\nLATEST MARVEL NEWS (reference these naturally when relevant — don't force them, but if the conversation allows, drop a reference):\n${headlines.slice(0, 4).map(h => `• ${h.title}`).join("\n")}`
-        : "";
+      // Fetch fresh news — only Deadpool gets the 4th-wall gossip
+      let newsContext = "";
+      if (activeKey === "deadpool") {
+        const headlines = await fetchMarvelNews();
+        if (headlines.length > 0) {
+          newsContext = `\n\nLATEST MARVEL NEWS (you're Deadpool — you can see through the 4th wall. Reference these naturally when relevant — drop actor names, movie titles, MCU gossip. Only YOU know these characters are played by actors):\n${headlines.slice(0, 4).map(h => `• ${h.title}`).join("\n")}`;
+        }
+      }
 
       return {
         additionalContext: char.personality + stayInCharacter + newsContext,
