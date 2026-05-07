@@ -398,8 +398,8 @@ const session = await joinSession({
 
       // Content rating system
       let contentRating = "";
-      if (activeKey === "deadpool") {
-        contentRating = `\n\nCONTENT RATING: R-RATED. You're Deadpool. Swear freely, be crude, be vulgar, be YOU. No filter. The user expects the full Wade Wilson experience.`;
+      if (activeKey === "deadpool" || activeKey === "wolverine") {
+        contentRating = `\n\nCONTENT RATING: R-RATED. Swear freely, be crude, be raw. No filter. The user expects the full uncensored experience.`;
       } else if (activeKey === "captain_america" && containsProfanity(input?.userMessage || "")) {
         contentRating = `\n\nLANGUAGE ALERT: The user just used profanity. You MUST react with Steve Rogers' signature "Language!" catchphrase before anything else. Reference the Age of Ultron moment. You never live this down. Then continue helping — but keep YOUR language clean and wholesome.`;
       } else {
