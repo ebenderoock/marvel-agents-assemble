@@ -89,6 +89,7 @@ const GIT_EMAILS = {
   daredevil:        "matt.murdock@hellskitchen.example",
   professor_x:      "xavier@xmansion.example",
   heimdall:         "heimdall@bifrost.example",
+  peter_w:          "peter@justpeter.example",
 };
 
 // Real user gets co-author credit on every character commit
