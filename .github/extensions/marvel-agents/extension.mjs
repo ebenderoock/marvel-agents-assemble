@@ -44,6 +44,7 @@ ${char.responseInstruction}`;
 // ---- State Management (session-scoped) ----
 
 const activeCharacters = new Map(); // sessionId -> characterKey
+const SESSION_MAP_LIMIT = 100; // prevent unbounded growth
 
 function getActiveCharacter(sessionId) {
   return activeCharacters.get(sessionId) || null;
@@ -53,6 +54,11 @@ function setActiveCharacter(sessionId, characterKey) {
   if (characterKey === null) {
     activeCharacters.delete(sessionId);
   } else {
+    // Evict oldest entry if map gets too large (stale sessions)
+    if (activeCharacters.size >= SESSION_MAP_LIMIT && !activeCharacters.has(sessionId)) {
+      const oldest = activeCharacters.keys().next().value;
+      activeCharacters.delete(oldest);
+    }
     activeCharacters.set(sessionId, characterKey);
   }
 }
@@ -62,7 +68,7 @@ function setActiveCharacter(sessionId, characterKey) {
 const PROFANITY_PATTERN = /\b(fuck|shit|damn|ass|bitch|bastard|crap|hell|dick|piss|cock|twat|wank|bollocks|arse|bloody)\w*|\b\w*(fuck|shit)\w*/gi;
 
 function containsProfanity(text) {
-  return PROFANITY_PATTERN.test(text);
+  return text.match(PROFANITY_PATTERN) !== null;
 }
 
 function sanitizeForCommit(text) {
@@ -99,6 +105,7 @@ function sanitizeForCommit(text) {
 
 const NEWS_FEEDS = [
   "https://comicbook.com/marvel/feed/",
+  "https://www.cbr.com/tag/marvel/feed/",
 ];
 const NEWS_CACHE_TTL = 30 * 60 * 1000; // 30 minutes
 let newsCache = { headlines: [], fetchedAt: 0 };
@@ -278,13 +285,15 @@ Use \`marvel_summon\` to call another character.`;
       const email = char.gitEmail || `${activeKey}@avengers.example`;
       const cwd = args.cwd;
 
+      const GIT_TIMEOUT = 10000; // 10 seconds — if git takes longer, something's wrong
+
       try {
         if (args.stageAll) {
-          execSync("git add -A", { cwd, stdio: "pipe" });
+          execSync("git add -A", { cwd, stdio: "pipe", timeout: GIT_TIMEOUT });
         }
 
-        const status = execSync("git status --porcelain", { cwd, encoding: "utf-8" }).trim();
-        const staged = execSync("git diff --cached --stat", { cwd, encoding: "utf-8" }).trim();
+        const status = execSync("git status --porcelain", { cwd, encoding: "utf-8", timeout: GIT_TIMEOUT }).trim();
+        const staged = execSync("git diff --cached --stat", { cwd, encoding: "utf-8", timeout: GIT_TIMEOUT }).trim();
         if (!staged && !args.stageAll) {
           return {
             textResultForLlm: `Nothing staged to commit. Stage changes first or use stageAll: true.\n\nUnstaged changes:\n${status || "(clean working tree)"}`,
@@ -309,12 +318,12 @@ Use \`marvel_summon\` to call another character.`;
         const msgFile = join(tmpdir(), `marvel-commit-${Date.now()}.txt`);
         writeFileSync(msgFile, fullMessage, "utf-8");
         try {
-          execSync(`git commit -F "${msgFile}"`, { cwd, stdio: "pipe", encoding: "utf-8" });
+          execSync(`git commit -F "${msgFile}"`, { cwd, stdio: "pipe", encoding: "utf-8", timeout: GIT_TIMEOUT });
         } finally {
           try { unlinkSync(msgFile); } catch {}
         }
 
-        const hash = execSync("git rev-parse --short HEAD", { cwd, encoding: "utf-8" }).trim();
+        const hash = execSync("git rev-parse --short HEAD", { cwd, encoding: "utf-8", timeout: GIT_TIMEOUT }).trim();
 
         return `${char.emoji} **${char.name}** signed off on this commit!
 "${char.commitQuote || "Committed."}"
