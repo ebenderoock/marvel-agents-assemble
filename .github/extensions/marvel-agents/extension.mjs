@@ -69,6 +69,13 @@ const GIT_EMAILS = {
   nick_fury:        "fury@shield.example",
   loki:             "loki@mischief.example",
   scarlet_witch:    "wanda@hex.example",
+  happy:            "happy.hogan@stark-security.example",
+  black_panther:    "tchalla@wakanda.example",
+  antman:           "scott.lang@pymtech.example",
+  falcon:           "sam.wilson@pararescue.example",
+  vision:           "vision@mind-stone.example",
+  miles:            "miles.morales@brooklyn.example",
+  thanos:           "thanos@titan.example",
 };
 
 // Real user gets co-author credit on every character commit
