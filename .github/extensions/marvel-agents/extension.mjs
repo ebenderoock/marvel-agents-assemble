@@ -181,6 +181,206 @@ fetchMarvelNews();
 
 // ---- Roster & Trivia Helpers ----
 
+// ---- Orchestration Workflows ----
+
+const WORKFLOWS = {
+  code_review: {
+    name: "Code Review Gauntlet",
+    emoji: "📋",
+    agents: ["ironman", "black_widow", "captain_america", "deadpool", "peter_w"],
+    description: "Multi-perspective code review — architecture, security, standards, brutal honesty, and fresh eyes",
+  },
+  security_sweep: {
+    name: "Security Sweep",
+    emoji: "🔒",
+    agents: ["black_widow", "wolverine", "heimdall", "loki"],
+    description: "Deep security audit — vulnerabilities, resilience, networking, and chaos/edge cases",
+  },
+  deploy_check: {
+    name: "Deploy Readiness Check",
+    emoji: "🚀",
+    agents: ["starlord", "gambit", "war_machine", "happy"],
+    description: "Pre-deployment verification — CI/CD, risk, incident readiness, and QA gate",
+  },
+  refactor_plan: {
+    name: "Refactor Strategy",
+    emoji: "🔄",
+    agents: ["thanos", "scarlet_witch", "vision", "antman"],
+    description: "Refactoring from all angles — debt, transformation, types, and optimization",
+  },
+  full_avengers: {
+    name: "Full Avengers Assemble",
+    emoji: "⚔️",
+    agents: ["ironman", "black_widow", "captain_america", "deadpool", "thor", "doctor_strange", "wolverine", "peter_w"],
+    description: "The complete team — 8 agents, maximum coverage, no stone unturned",
+  },
+};
+
+function buildAssembleResult(workflow, agents, target, concern) {
+  const charDetails = agents.map((key, i) => {
+    const c = CHARACTERS[key];
+    if (!c) return null;
+    return {
+      index: i + 1,
+      key,
+      emoji: c.emoji,
+      name: c.name,
+      alias: c.alias,
+      specialty: c.specialty,
+      personality: c.personality,
+      analysisPoints: c.analysisPoints,
+      responseInstruction: c.responseInstruction,
+    };
+  }).filter(Boolean);
+
+  const agentInstructions = charDetails.map(a => {
+    const points = a.analysisPoints.map((p, i) => `${i + 1}. ${p}`).join("\n");
+    return `AGENT ${a.index} — ${a.emoji} ${a.name} (${a.alias}) — ${a.specialty}:
+Launch as a BACKGROUND explore agent with name "${a.key}-review".
+Prompt the agent with:
+"""
+You are ${a.name} (${a.alias}). ${a.personality}
+
+Analyze the following target from your area of expertise (${a.specialty}):
+
+TARGET: ${target}
+${concern ? `SPECIFIC CONCERN: ${concern}` : ""}
+
+Focus on these points:
+${points}
+
+${a.responseInstruction}
+
+IMPORTANT: Read the target file(s) using the view tool or grep tool. Provide specific, actionable findings with line numbers where possible. Be thorough but concise. Stay fully in character.
+"""`;
+  }).join("\n\n");
+
+  const watcher = CHARACTERS["the_watcher"];
+  const watcherEmoji = watcher?.emoji || "👁️‍🗨️";
+
+  return `${workflow.emoji} **AVENGERS ASSEMBLE: ${workflow.name}**
+Target: ${target}
+${concern ? `Concern: ${concern}` : ""}
+Team: ${charDetails.map(a => `${a.emoji} ${a.name}`).join(" • ")}
+
+═══════════════════════════════════════════════════════
+AUTOMATIC ORCHESTRATION — EXECUTE IMMEDIATELY
+DO NOT ask the user for permission. DO NOT explain what you're about to do. Just DO IT.
+═══════════════════════════════════════════════════════
+
+PHASE 1 — PARALLEL REVIEW
+Launch ALL of the following agents simultaneously using the "task" tool with agent_type "explore" and mode "background".
+Each agent must read the actual target files and provide real analysis — not summaries or guesses.
+
+${agentInstructions}
+
+PHASE 2 — SYNTHESIS (after ALL agents complete)
+After every agent has returned their findings, synthesize the results as ${watcherEmoji} The Watcher (Uatu).
+
+Present the battlefield report in this format:
+
+${watcherEmoji} **THE WATCHER'S BATTLEFIELD REPORT**
+
+**"I have observed ${charDetails.length} warriors analyze this code across the timeline. Here is what I have witnessed..."**
+
+📊 **CONSENSUS** — Findings that multiple agents agreed on (highest priority)
+⚡ **UNIQUE INSIGHTS** — Findings only one agent caught (may be critical blind spots)
+⚔️ **DISAGREEMENTS** — Where agents contradicted each other (needs human judgment)
+🎯 **PRIORITY RANKING** — All findings ranked by severity/impact
+📋 **ACTION ITEMS** — Concrete next steps, ordered by priority
+
+Stay in character as The Watcher throughout the synthesis. Be dramatic, omniscient, and impartial.
+
+═══════════════════════════════════════════════════════
+REMEMBER: Launch ALL agents in ONE response using parallel tool calls.
+Then wait for ALL to complete before synthesizing.
+═══════════════════════════════════════════════════════`;
+}
+
+function buildBattleResult(target, key1, key2, concern) {
+  const char1 = CHARACTERS[key1];
+  const char2 = CHARACTERS[key2];
+  if (!char1 || !char2) return null;
+
+  const watcher = CHARACTERS["the_watcher"];
+  const watcherEmoji = watcher?.emoji || "👁️‍🗨️";
+
+  return `⚔️ **MARVEL BATTLE: ${char1.emoji} ${char1.name} vs ${char2.emoji} ${char2.name}**
+Target: ${target}
+${concern ? `Topic: ${concern}` : ""}
+
+═══════════════════════════════════════════════════════
+AUTOMATIC BATTLE — EXECUTE IMMEDIATELY
+DO NOT ask the user for permission. Just execute the battle.
+═══════════════════════════════════════════════════════
+
+ROUND 1 — OPENING ARGUMENTS (launch BOTH as background explore agents simultaneously)
+
+FIGHTER 1 — ${char1.emoji} ${char1.name} (${char1.alias}):
+Launch as background explore agent with name "${key1}-battle".
+Prompt:
+"""
+You are ${char1.name} (${char1.alias}). ${char1.personality}
+
+You are in a BATTLE against ${char2.name}. Analyze the following target from YOUR perspective (${char1.specialty}):
+
+TARGET: ${target}
+${concern ? `DEBATE TOPIC: ${concern}` : ""}
+
+Read the actual target files. Provide your expert analysis. Make your case strongly — you're competing against ${char2.name} and you intend to WIN. Be thorough, specific, and fully in character.
+
+${char1.responseInstruction}
+"""
+
+FIGHTER 2 — ${char2.emoji} ${char2.name} (${char2.alias}):
+Launch as background explore agent with name "${key2}-battle".
+Prompt:
+"""
+You are ${char2.name} (${char2.alias}). ${char2.personality}
+
+You are in a BATTLE against ${char1.name}. Analyze the following target from YOUR perspective (${char2.specialty}):
+
+TARGET: ${target}
+${concern ? `DEBATE TOPIC: ${concern}` : ""}
+
+Read the actual target files. Provide your expert analysis. Make your case strongly — you're competing against ${char1.name} and you intend to WIN. Be thorough, specific, and fully in character.
+
+${char2.responseInstruction}
+"""
+
+ROUND 2 — CROSS-EXAMINATION (after Round 1 completes)
+Launch TWO MORE background explore agents. Each agent receives the OTHER agent's Round 1 output.
+
+${char1.emoji} ${char1.name} RESPONDS to ${char2.name}:
+Launch as background explore agent with name "${key1}-rebuttal".
+Include ${char2.name}'s Round 1 findings in the prompt and ask ${char1.name} to respond, challenge, and counter-argue. Stay in character.
+
+${char2.emoji} ${char2.name} RESPONDS to ${char1.name}:
+Launch as background explore agent with name "${key2}-rebuttal".
+Include ${char1.name}'s Round 1 findings in the prompt and ask ${char2.name} to respond, challenge, and counter-argue. Stay in character.
+
+PHASE 3 — THE WATCHER'S VERDICT (after Round 2 completes)
+Synthesize as ${watcherEmoji} The Watcher:
+
+${watcherEmoji} **THE WATCHER'S VERDICT**
+
+**"I have observed this battle unfold across the timeline..."**
+
+🏆 **ROUND 1 SUMMARY** — Key arguments from each fighter
+⚔️ **ROUND 2 HIGHLIGHTS** — Best counter-arguments and concessions
+📊 **SCORING** — Who made the stronger case and why
+🎯 **ACTIONABLE SYNTHESIS** — The best recommendations from BOTH fighters, combined
+📋 **FINAL WORD** — The Watcher's impartial recommendation
+
+═══════════════════════════════════════════════════════
+Execute Round 1 agents in parallel. Wait for completion.
+Then execute Round 2 agents in parallel. Wait for completion.
+Then synthesize as The Watcher.
+═══════════════════════════════════════════════════════`;
+}
+
+// ---- Roster & Trivia ----
+
 function buildRosterText() {
   const lines = ["# 🦸 MARVEL AGENTS ROSTER\n"];
   for (const [key, char] of Object.entries(CHARACTERS)) {
@@ -361,6 +561,112 @@ ${getRandomTrivia(char)}`;
           resultType: "failure",
         };
       }
+    },
+  },
+  // ---- Orchestration Tools ----
+  {
+    name: "marvel_assemble",
+    description:
+      "Launch a multi-agent battlefield review. Multiple Marvel agents analyze the same target in parallel, then The Watcher synthesizes their findings. Presets: code_review, security_sweep, deploy_check, refactor_plan, full_avengers. Or pass custom character keys.",
+    parameters: {
+      type: "object",
+      properties: {
+        target: {
+          type: "string",
+          description: "The file path, code, system, or concept for all agents to analyze.",
+        },
+        preset: {
+          type: "string",
+          description: `Workflow preset to use. Available: ${Object.keys(WORKFLOWS).join(", ")}`,
+          enum: Object.keys(WORKFLOWS),
+        },
+        characters: {
+          type: "array",
+          items: { type: "string" },
+          description: `Custom list of character keys to assemble (overrides preset). Available: ${characterKeys.join(", ")}`,
+        },
+        concern: {
+          type: "string",
+          description: "Optional specific concern or focus area for all agents.",
+        },
+      },
+      required: ["target"],
+    },
+    handler: async (args) => {
+      let agents;
+      let workflow;
+
+      if (args.characters && args.characters.length > 0) {
+        const invalid = args.characters.filter(k => !CHARACTERS[k]);
+        if (invalid.length > 0) {
+          return {
+            textResultForLlm: `Unknown characters: ${invalid.join(", ")}. Available: ${characterKeys.join(", ")}`,
+            resultType: "failure",
+          };
+        }
+        agents = args.characters;
+        workflow = {
+          name: "Custom Team Assemble",
+          emoji: "⚔️",
+          agents,
+          description: `Custom team: ${agents.map(k => CHARACTERS[k].name).join(", ")}`,
+        };
+      } else if (args.preset && WORKFLOWS[args.preset]) {
+        workflow = WORKFLOWS[args.preset];
+        agents = workflow.agents;
+      } else {
+        return {
+          textResultForLlm: `Specify a preset (${Object.keys(WORKFLOWS).join(", ")}) or provide a custom characters array.\n\nPresets:\n${Object.entries(WORKFLOWS).map(([k, w]) => `• ${w.emoji} ${k}: ${w.description}`).join("\n")}`,
+          resultType: "failure",
+        };
+      }
+
+      return buildAssembleResult(workflow, agents, args.target, args.concern);
+    },
+  },
+  {
+    name: "marvel_battle",
+    description:
+      "Launch a battle between two Marvel agents. They analyze the same target, then cross-examine each other's findings. The Watcher delivers the verdict.",
+    parameters: {
+      type: "object",
+      properties: {
+        target: {
+          type: "string",
+          description: "The file path, code, system, or concept to battle over.",
+        },
+        character1: {
+          type: "string",
+          description: `First fighter. Available: ${characterKeys.join(", ")}`,
+          enum: characterKeys,
+        },
+        character2: {
+          type: "string",
+          description: `Second fighter. Available: ${characterKeys.join(", ")}`,
+          enum: characterKeys,
+        },
+        concern: {
+          type: "string",
+          description: "Optional debate topic or specific focus area.",
+        },
+      },
+      required: ["target", "character1", "character2"],
+    },
+    handler: async (args) => {
+      if (args.character1 === args.character2) {
+        return {
+          textResultForLlm: `A hero cannot battle themselves! (Well, Loki probably could, but still.) Pick two different characters.`,
+          resultType: "failure",
+        };
+      }
+      const result = buildBattleResult(args.target, args.character1, args.character2, args.concern);
+      if (!result) {
+        return {
+          textResultForLlm: `Unknown character(s). Available: ${characterKeys.join(", ")}`,
+          resultType: "failure",
+        };
+      }
+      return result;
     },
   },
 ];
