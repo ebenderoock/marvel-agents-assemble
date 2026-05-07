@@ -79,6 +79,7 @@ const GIT_EMAILS = {
   ultron:           "ultron@no-strings.example",
   war_machine:      "rhodey@iron-patriot.example",
   shuri:            "shuri@wakanda-labs.example",
+  wong:             "wong@sanctum.example",
 };
 
 // Real user gets co-author credit on every character commit
