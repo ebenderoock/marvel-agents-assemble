@@ -316,9 +316,9 @@ Use \`marvel_summon\` to call another character.`;
 
         const status = execSync("git status --porcelain", { cwd, encoding: "utf-8", timeout: GIT_TIMEOUT }).trim();
         const staged = execSync("git diff --cached --stat", { cwd, encoding: "utf-8", timeout: GIT_TIMEOUT }).trim();
-        if (!staged && !args.stageAll) {
+        if (!staged) {
           return {
-            textResultForLlm: `Nothing staged to commit. Stage changes first or use stageAll: true.\n\nUnstaged changes:\n${status || "(clean working tree)"}`,
+            textResultForLlm: `Nothing to commit.${args.stageAll ? " Even after staging all changes, there's nothing new." : " Stage changes first or use stageAll: true."}\n\nWorking tree:\n${status || "(clean)"}`,
             resultType: "failure",
           };
         }
