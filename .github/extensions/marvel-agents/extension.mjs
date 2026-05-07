@@ -59,16 +59,39 @@ function setActiveCharacter(sessionId, characterKey) {
 
 // ---- Content Rating System ----
 
-const PROFANITY_PATTERN = /\b(fuck|shit|damn|ass|bitch|bastard|crap|hell|dick|piss|cock|twat|wank|bollocks|arse|bloody)\w*/gi;
+const PROFANITY_PATTERN = /\b(fuck|shit|damn|ass|bitch|bastard|crap|hell|dick|piss|cock|twat|wank|bollocks|arse|bloody)\w*|\b\w*(fuck|shit)\w*/gi;
 
 function containsProfanity(text) {
   return PROFANITY_PATTERN.test(text);
 }
 
 function sanitizeForCommit(text) {
+  const BASE_REPLACEMENTS = {
+    fuck: "heck", shit: "stuff", damn: "darn", ass: "butt", bitch: "jerk",
+    bastard: "scoundrel", crap: "crud", hell: "heck", dick: "jerk",
+    piss: "annoy", cock: "rooster", twat: "fool", wank: "nonsense",
+    bollocks: "nonsense", arse: "butt", bloody: "dang",
+  };
+  const EXACT = {
+    fucking: "hecking", fucked: "hecked", fucker: "rascal", fuckers: "rascals",
+    shitshow: "mess", shitty: "bad", damned: "darned",
+    asshole: "jerk", assholes: "jerks", bitching: "complaining",
+    bastards: "scoundrels", crappy: "cruddy", pissed: "annoyed", pissing: "annoying",
+    unfuck: "fix", unfucked: "fixed", unfucking: "fixing",
+    bullshit: "nonsense", horseshit: "nonsense", apeshit: "wild", batshit: "wild",
+  };
   return text.replace(PROFANITY_PATTERN, (match) => {
-    if (match.length <= 2) return match;
-    return match[0] + "*".repeat(match.length - 2) + match[match.length - 1];
+    const lower = match.toLowerCase();
+    if (EXACT[lower]) return EXACT[lower];
+    if (BASE_REPLACEMENTS[lower]) return BASE_REPLACEMENTS[lower];
+    // For unknown suffixed forms, find the base word and use its replacement
+    for (const [base, replacement] of Object.entries(BASE_REPLACEMENTS)) {
+      if (lower.startsWith(base)) return replacement;
+    }
+    for (const [base, replacement] of Object.entries(BASE_REPLACEMENTS)) {
+      if (lower.includes(base)) return replacement;
+    }
+    return "heck";
   });
 }
 
