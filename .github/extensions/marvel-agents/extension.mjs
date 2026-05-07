@@ -65,39 +65,61 @@ function setActiveCharacter(sessionId, characterKey) {
 
 // ---- Content Rating System ----
 
-const PROFANITY_PATTERN = /\b(fuck|shit|damn|ass|bitch|bastard|crap|hell|dick|piss|cock|twat|wank|bollocks|arse|bloody)\w*|\b\w*(fuck|shit)\w*/gi;
+// Exact profanity words/forms only — no suffix matching to avoid false positives (assets, hello, cockpit, etc.)
+const PROFANITY_WORDS = new Set([
+  "fuck", "fucking", "fucked", "fucker", "fuckers", "fucks",
+  "shit", "shits", "shitty", "shitshow", "shitted",
+  "damn", "damned", "damning", "damns",
+  "ass", "asses", "asshole", "assholes",
+  "bitch", "bitches", "bitching", "bitchy",
+  "bastard", "bastards", "bastardized",
+  "crap", "crappy", "craps",
+  "hell",
+  "dick", "dicks", "dickhead", "dickheads",
+  "piss", "pissed", "pissing", "pisses",
+  "cock", "cocks", "cocksucker",
+  "twat", "twats",
+  "wank", "wanks", "wanker", "wankers", "wanking",
+  "bollocks",
+  "arse", "arses", "arsehole", "arseholes",
+  "bloody",
+  "bullshit", "horseshit", "apeshit", "batshit", "dipshit",
+  "unfuck", "unfucked", "unfucking",
+  "motherfucker", "motherfuckers", "motherfucking",
+]);
+const PROFANITY_PATTERN_EXACT = /\b[a-z]+\b/gi;
 
 function containsProfanity(text) {
-  return text.match(PROFANITY_PATTERN) !== null;
+  const words = text.toLowerCase().match(PROFANITY_PATTERN_EXACT) || [];
+  return words.some(w => PROFANITY_WORDS.has(w));
 }
 
 function sanitizeForCommit(text) {
-  const BASE_REPLACEMENTS = {
-    fuck: "heck", shit: "stuff", damn: "darn", ass: "butt", bitch: "jerk",
-    bastard: "scoundrel", crap: "crud", hell: "heck", dick: "jerk",
-    piss: "annoy", cock: "rooster", twat: "fool", wank: "nonsense",
-    bollocks: "nonsense", arse: "butt", bloody: "dang",
-  };
-  const EXACT = {
-    fucking: "hecking", fucked: "hecked", fucker: "rascal", fuckers: "rascals",
-    shitshow: "mess", shitty: "bad", damned: "darned",
-    asshole: "jerk", assholes: "jerks", bitching: "complaining",
-    bastards: "scoundrels", crappy: "cruddy", pissed: "annoyed", pissing: "annoying",
+  const REPLACEMENTS = {
+    fuck: "heck", fucking: "hecking", fucked: "hecked", fucker: "rascal", fuckers: "rascals", fucks: "hecks",
+    shit: "stuff", shits: "stuff", shitty: "bad", shitshow: "mess", shitted: "messed",
+    damn: "darn", damned: "darned", damning: "darning", damns: "darns",
+    ass: "butt", asses: "butts", asshole: "jerk", assholes: "jerks",
+    bitch: "jerk", bitches: "jerks", bitching: "complaining", bitchy: "cranky",
+    bastard: "scoundrel", bastards: "scoundrels", bastardized: "mangled",
+    crap: "crud", crappy: "cruddy", craps: "cruds",
+    hell: "heck",
+    dick: "jerk", dicks: "jerks", dickhead: "jerk", dickheads: "jerks",
+    piss: "annoy", pissed: "annoyed", pissing: "annoying", pisses: "annoys",
+    cock: "rooster", cocks: "roosters", cocksucker: "jerk",
+    twat: "fool", twats: "fools",
+    wank: "nonsense", wanks: "nonsense", wanker: "fool", wankers: "fools", wanking: "fooling",
+    bollocks: "nonsense",
+    arse: "butt", arses: "butts", arsehole: "jerk", arseholes: "jerks",
+    bloody: "dang",
+    bullshit: "nonsense", horseshit: "nonsense", apeshit: "wild", batshit: "wild", dipshit: "fool",
     unfuck: "fix", unfucked: "fixed", unfucking: "fixing",
-    bullshit: "nonsense", horseshit: "nonsense", apeshit: "wild", batshit: "wild",
+    motherfucker: "scoundrel", motherfuckers: "scoundrels", motherfucking: "hecking",
   };
-  return text.replace(PROFANITY_PATTERN, (match) => {
-    const lower = match.toLowerCase();
-    if (EXACT[lower]) return EXACT[lower];
-    if (BASE_REPLACEMENTS[lower]) return BASE_REPLACEMENTS[lower];
-    // For unknown suffixed forms, find the base word and use its replacement
-    for (const [base, replacement] of Object.entries(BASE_REPLACEMENTS)) {
-      if (lower.startsWith(base)) return replacement;
-    }
-    for (const [base, replacement] of Object.entries(BASE_REPLACEMENTS)) {
-      if (lower.includes(base)) return replacement;
-    }
-    return "heck";
+  return text.replace(/\b[a-z]+\b/gi, (word) => {
+    const lower = word.toLowerCase();
+    if (REPLACEMENTS[lower]) return REPLACEMENTS[lower];
+    return word;
   });
 }
 
