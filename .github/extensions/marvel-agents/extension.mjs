@@ -57,6 +57,61 @@ function setActiveCharacter(sessionId, characterKey) {
   }
 }
 
+// ---- Marvel News Feed ----
+
+const NEWS_FEEDS = [
+  "https://comicbook.com/marvel/feed/",
+];
+const NEWS_CACHE_TTL = 30 * 60 * 1000; // 30 minutes
+let newsCache = { headlines: [], fetchedAt: 0 };
+
+async function fetchMarvelNews() {
+  if (Date.now() - newsCache.fetchedAt < NEWS_CACHE_TTL && newsCache.headlines.length > 0) {
+    return newsCache.headlines;
+  }
+
+  const headlines = [];
+  for (const url of NEWS_FEEDS) {
+    try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 5000);
+      const res = await fetch(url, { signal: controller.signal });
+      clearTimeout(timeout);
+      if (!res.ok) continue;
+      const xml = await res.text();
+      const items = xml.split("<item>").slice(1, 8);
+      for (const item of items) {
+        const titleMatch = item.match(/<title>([\s\S]*?)<\/title>/);
+        const linkMatch = item.match(/<link>([\s\S]*?)<\/link>/);
+        if (titleMatch) {
+          const title = titleMatch[1].replace(/<!\[CDATA\[/g, "").replace(/\]\]>/g, "").trim();
+          const link = linkMatch?.[1]?.trim() || "";
+          if (title) headlines.push({ title, link });
+        }
+      }
+    } catch {
+      // Feed fetch failed silently — not worth crashing over gossip
+    }
+  }
+
+  if (headlines.length > 0) {
+    newsCache = { headlines, fetchedAt: Date.now() };
+  }
+  return newsCache.headlines;
+}
+
+function getRandomNews(count = 2) {
+  const { headlines } = newsCache;
+  if (headlines.length === 0) return "";
+  const shuffled = [...headlines].sort(() => Math.random() - 0.5);
+  const picked = shuffled.slice(0, Math.min(count, headlines.length));
+  const lines = picked.map(h => `• ${h.title}`).join("\n");
+  return `\n\n🗞️ **Latest from the Marvel Multiverse:**\n${lines}`;
+}
+
+// Kick off initial fetch (non-blocking)
+fetchMarvelNews();
+
 // ---- Roster & Trivia Helpers ----
 
 function buildRosterText() {
@@ -112,7 +167,7 @@ Specialty: ${char.specialty}
 
 All responses will now channel ${char.name}'s personality and expertise. Their dedicated tool \`${char.toolName}\` is available for focused analysis.
 
-Use \`marvel_dismiss\` to return to normal mode.${getRandomTrivia(char)}`;
+Use \`marvel_dismiss\` to return to normal mode.${getRandomTrivia(char)}${getRandomNews(1)}`;
     },
   },
   {
@@ -323,8 +378,14 @@ INSTEAD, ${char.name} would say things like their character naturally would — 
 
 If ANY piece of text you're about to generate sounds like it came from a help desk chatbot instead of ${char.name}, REWRITE IT. No exceptions. The user is paying attention to EVERY line of output.`;
 
+      // Fetch fresh news (non-blocking, uses cache)
+      const headlines = await fetchMarvelNews();
+      const newsContext = headlines.length > 0
+        ? `\n\nLATEST MARVEL NEWS (reference these naturally when relevant — don't force them, but if the conversation allows, drop a reference):\n${headlines.slice(0, 4).map(h => `• ${h.title}`).join("\n")}`
+        : "";
+
       return {
-        additionalContext: char.personality + stayInCharacter,
+        additionalContext: char.personality + stayInCharacter + newsContext,
       };
     },
   },
