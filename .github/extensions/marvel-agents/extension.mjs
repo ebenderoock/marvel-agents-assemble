@@ -80,6 +80,12 @@ const GIT_EMAILS = {
   war_machine:      "rhodey@iron-patriot.example",
   shuri:            "shuri@wakanda-labs.example",
   wong:             "wong@sanctum.example",
+  wolverine:        "logan@weapon-x.example",
+  ghost_spider:     "gwen@spider-verse.example",
+  storm:            "ororo@xavier-institute.example",
+  magneto:          "erik@genosha.example",
+  gambit:           "remy@thieves-guild.example",
+  nebula:           "nebula@benatar.example",
 };
 
 // Real user gets co-author credit on every character commit
