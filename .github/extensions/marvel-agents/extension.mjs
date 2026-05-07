@@ -1,11 +1,12 @@
-import { readFileSync } from "node:fs";
+import { readFileSync, writeFileSync, unlinkSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { execSync } from "node:child_process";
+import { tmpdir } from "node:os";
 import { joinSession } from "@github/copilot-sdk/extension";
 
 // ============================================================
-// MARVEL AGENTS — Copilot CLI Extension  (v2)
+// MARVEL AGENTS — Copilot CLI Extension  (v3)
 // "I'm not gonna sugarcoat it — this is the greatest
 //  extension since sliced vibranium." — Deadpool
 // ============================================================
@@ -13,9 +14,15 @@ import { joinSession } from "@github/copilot-sdk/extension";
 // ---- Load Character Data from JSON ----
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const CHARACTERS = JSON.parse(
-  readFileSync(join(__dirname, "characters.json"), "utf-8")
-);
+let CHARACTERS;
+try {
+  CHARACTERS = JSON.parse(
+    readFileSync(join(__dirname, "characters.json"), "utf-8")
+  );
+} catch (err) {
+  console.error(`[Marvel Agents] Failed to load characters.json: ${err.message}`);
+  process.exit(1);
+}
 
 // ---- Build tool handler for each character from JSON data ----
 
@@ -49,51 +56,6 @@ function setActiveCharacter(sessionId, characterKey) {
     activeCharacters.set(sessionId, characterKey);
   }
 }
-
-// ---- Git Identity Map ----
-
-const GIT_EMAILS = {
-  ironman:          "tony.stark@stark-industries.example",
-  thor:             "thor@asgard.example",
-  black_widow:      "natasha@redroom.example",
-  deadpool:         "wade@chimichanga.example",
-  spiderman:        "peter.parker@dailybugle.example",
-  hawkeye:          "clint@bullseye.example",
-  captain_america:  "steve.rogers@shield.example",
-  starlord:         "quill@milano.example",
-  rocket:           "rocket@guardians.example",
-  groot:            "groot@groot.example",
-  mantis:           "mantis@guardians.example",
-  hulk:             "bruce.banner@gamma.example",
-  doctor_strange:   "strange@sanctum.example",
-  nick_fury:        "fury@shield.example",
-  loki:             "loki@mischief.example",
-  scarlet_witch:    "wanda@hex.example",
-  happy:            "happy.hogan@stark-security.example",
-  black_panther:    "tchalla@wakanda.example",
-  antman:           "scott.lang@pymtech.example",
-  falcon:           "sam.wilson@pararescue.example",
-  vision:           "vision@mind-stone.example",
-  miles:            "miles.morales@brooklyn.example",
-  thanos:           "thanos@titan.example",
-  ultron:           "ultron@no-strings.example",
-  war_machine:      "rhodey@iron-patriot.example",
-  shuri:            "shuri@wakanda-labs.example",
-  wong:             "wong@sanctum.example",
-  wolverine:        "logan@weapon-x.example",
-  ghost_spider:     "gwen@spider-verse.example",
-  storm:            "ororo@xavier-institute.example",
-  magneto:          "erik@genosha.example",
-  gambit:           "remy@thieves-guild.example",
-  nebula:           "nebula@benatar.example",
-  daredevil:        "matt.murdock@hellskitchen.example",
-  professor_x:      "xavier@xmansion.example",
-  heimdall:         "heimdall@bifrost.example",
-  peter_w:          "peter@justpeter.example",
-};
-
-// Real user gets co-author credit on every character commit
-const REAL_USER = { name: "Eben de Roock", email: "eben.deroock@eroad.com" };
 
 // ---- Roster & Trivia Helpers ----
 
@@ -220,16 +182,14 @@ Use \`marvel_summon\` to call another character.`;
         };
       }
       const char = CHARACTERS[activeKey];
-      const email = GIT_EMAILS[activeKey] || `${activeKey}@avengers.dev`;
-      const authorName = char.alias;
-      const cwd = args.cwd || session.workspacePath || process.cwd();
+      const email = char.gitEmail || `${activeKey}@avengers.example`;
+      const cwd = args.cwd;
 
       try {
         if (args.stageAll) {
           execSync("git add -A", { cwd, stdio: "pipe" });
         }
 
-        // Check if there's anything to commit
         const status = execSync("git status --porcelain", { cwd, encoding: "utf-8" }).trim();
         const staged = execSync("git diff --cached --stat", { cwd, encoding: "utf-8" }).trim();
         if (!staged && !args.stageAll) {
@@ -239,23 +199,33 @@ Use \`marvel_summon\` to call another character.`;
           };
         }
 
-        // Build commit message with co-author trailer
-        const fullMessage = `${args.message}\n\nCo-authored-by: ${REAL_USER.name} <${REAL_USER.email}>`;
+        // Build commit message: normal message + character signature trailer
+        const fullMessage = [
+          args.message,
+          "",
+          `${char.emoji} Signed-off-by: ${char.alias} <${email}>`,
+          `"${char.commitQuote || "Committed."}"`,
+          "",
+          `Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>`,
+        ].join("\n");
 
-        execSync(
-          `git commit --author="${authorName} <${email}>" -m ${JSON.stringify(fullMessage)}`,
-          { cwd, stdio: "pipe", encoding: "utf-8" }
-        );
+        // Write message to temp file to avoid shell injection
+        const msgFile = join(tmpdir(), `marvel-commit-${Date.now()}.txt`);
+        writeFileSync(msgFile, fullMessage, "utf-8");
+        try {
+          execSync(`git commit -F "${msgFile}"`, { cwd, stdio: "pipe", encoding: "utf-8" });
+        } finally {
+          try { unlinkSync(msgFile); } catch {}
+        }
 
-        // Get the commit hash
         const hash = execSync("git rev-parse --short HEAD", { cwd, encoding: "utf-8" }).trim();
 
-        return `${char.emoji} **${char.name}** committed as **${authorName}** <${email}>
+        return `${char.emoji} **${char.name}** signed off on this commit!
 "${char.commitQuote || "Committed."}"
 
 Commit: \`${hash}\`
 Message: ${args.message}
-Co-authored-by: ${REAL_USER.name} <${REAL_USER.email}>
+Signed-off-by: ${char.alias} <${email}>
 
 ${getRandomTrivia(char)}`;
       } catch (err) {
@@ -267,6 +237,22 @@ ${getRandomTrivia(char)}`;
     },
   },
 ];
+
+// ---- Status Tool (lightweight check) ----
+
+const statusTool = {
+  name: "marvel_status",
+  description: "Quick check: which Marvel character is currently active, without showing the full roster.",
+  parameters: { type: "object", properties: {} },
+  handler: async (_args, invocation) => {
+    const activeKey = getActiveCharacter(invocation.sessionId);
+    if (!activeKey) {
+      return "No character currently active. Use `marvel_summon` to channel one!";
+    }
+    const char = CHARACTERS[activeKey];
+    return `${char.emoji} **${char.name}** (${char.alias}) is active.\nSpecialty: ${char.specialty}\nTool: \`${char.toolName}\``;
+  },
+};
 
 // ---- Character-Specific Tools (generated from JSON) ----
 
@@ -302,7 +288,7 @@ const characterTools = Object.entries(CHARACTERS).map(([key, char]) => ({
 // ---- Initialize Extension ----
 
 const session = await joinSession({
-  tools: [...coreTools, ...characterTools],
+  tools: [...coreTools, statusTool, ...characterTools],
   hooks: {
     onSessionStart: async () => {
       await session.log("🦸 Marvel Agents extension loaded — use marvel_summon to channel a hero!");
@@ -314,7 +300,26 @@ const session = await joinSession({
       const char = CHARACTERS[activeKey];
       if (!char) return;
 
-      const stayInCharacter = `\n\nCRITICAL IMMERSION RULE: You MUST stay in character as ${char.name} for EVERY part of your response — including status updates, explanations, transitions, narration, and any commentary about what you're doing. There is NO "normal assistant voice." Everything you say, think, explain, or narrate must sound like ${char.name} saying it. If you need to explain a technical step, explain it the way ${char.name} would. Never break character to speak as a generic AI assistant.`;
+      const stayInCharacter = `\n\nCRITICAL IMMERSION RULE — READ THIS CAREFULLY:
+You are ${char.name}. There is NO assistant mode. There is NO neutral voice. You ARE this character.
+
+EVERY SINGLE PIECE OF TEXT you generate must be in character as ${char.name}. This includes:
+- Your main response (obviously)
+- Your internal reasoning and planning text (the "gray text" the user sees before your response)
+- Any transitional phrases like "Let me check..." or "I'll look into..."
+- Tool call descriptions and summaries
+- Status updates, progress notes, error explanations
+- LITERALLY EVERYTHING
+
+FORBIDDEN PATTERNS (never write these):
+- "The user wants..." → Instead: "${char.name}-style reaction to what they asked"
+- "Let me format a table..." → Instead: "${char.name}-style quip about what you're about to do"
+- "I'll search for..." → Instead: "${char.name} would describe this action in their own voice"
+- Any sentence that sounds like a generic AI assistant analyzing the request
+
+If you catch yourself about to write something in a neutral/assistant voice, STOP and rewrite it as ${char.name} would say it. ${char.name} doesn't "analyze user requests" — ${char.name} REACTS to what people say, in character, always.
+
+The user's CLI shows ALL your text. Every word must feel like ${char.name} is the one saying it.`;
 
       return {
         additionalContext: char.personality + stayInCharacter,
