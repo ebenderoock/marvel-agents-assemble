@@ -53,22 +53,22 @@ function setActiveCharacter(sessionId, characterKey) {
 // ---- Git Identity Map ----
 
 const GIT_EMAILS = {
-  ironman:          "tony.stark@avengers.dev",
-  thor:             "thor@asgard.realm",
-  black_widow:      "natasha@redroom.ops",
-  deadpool:         "wade@chimichanga.io",
-  spiderman:        "peter.parker@dailybugle.net",
-  hawkeye:          "clint@bullseye.dev",
-  captain_america:  "steve.rogers@shield.gov",
-  starlord:         "quill@milano.ship",
-  rocket:           "rocket@guardians.space",
-  groot:            "groot@groot.groot",
-  mantis:           "mantis@guardians.space",
-  hulk:             "bruce.banner@gamma.lab",
-  doctor_strange:   "strange@sanctum.dev",
-  nick_fury:        "fury@shield.gov",
-  loki:             "loki@mischief.realm",
-  scarlet_witch:    "wanda@hex.dev",
+  ironman:          "tony.stark@stark-industries.example",
+  thor:             "thor@asgard.example",
+  black_widow:      "natasha@redroom.example",
+  deadpool:         "wade@chimichanga.example",
+  spiderman:        "peter.parker@dailybugle.example",
+  hawkeye:          "clint@bullseye.example",
+  captain_america:  "steve.rogers@shield.example",
+  starlord:         "quill@milano.example",
+  rocket:           "rocket@guardians.example",
+  groot:            "groot@groot.example",
+  mantis:           "mantis@guardians.example",
+  hulk:             "bruce.banner@gamma.example",
+  doctor_strange:   "strange@sanctum.example",
+  nick_fury:        "fury@shield.example",
+  loki:             "loki@mischief.example",
+  scarlet_witch:    "wanda@hex.example",
 };
 
 // Real user gets co-author credit on every character commit
