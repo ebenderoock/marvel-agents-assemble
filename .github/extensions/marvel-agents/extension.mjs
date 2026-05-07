@@ -57,6 +57,21 @@ function setActiveCharacter(sessionId, characterKey) {
   }
 }
 
+// ---- Content Rating System ----
+
+const PROFANITY_PATTERN = /\b(fuck|shit|damn|ass|bitch|bastard|crap|hell|dick|piss|cock|twat|wank|bollocks|arse|bloody)\w*/gi;
+
+function containsProfanity(text) {
+  return PROFANITY_PATTERN.test(text);
+}
+
+function sanitizeForCommit(text) {
+  return text.replace(PROFANITY_PATTERN, (match) => {
+    if (match.length <= 2) return match;
+    return match[0] + "*".repeat(match.length - 2) + match[match.length - 1];
+  });
+}
+
 // ---- Marvel News Feed ----
 
 const NEWS_FEEDS = [
@@ -254,12 +269,15 @@ Use \`marvel_summon\` to call another character.`;
           };
         }
 
+        // Sanitize commit message — keep git history SFW
+        const cleanMessage = sanitizeForCommit(args.message);
+
         // Build commit message: normal message + character signature trailer
         const fullMessage = [
-          args.message,
+          cleanMessage,
           "",
           `${char.emoji} Signed-off-by: ${char.alias} <${email}>`,
-          `"${char.commitQuote || "Committed."}"`,
+          `"${sanitizeForCommit(char.commitQuote || "Committed.")}"`,
           "",
           `Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>`,
         ].join("\n");
@@ -355,6 +373,16 @@ const session = await joinSession({
       const char = CHARACTERS[activeKey];
       if (!char) return;
 
+      // Content rating system
+      let contentRating = "";
+      if (activeKey === "deadpool") {
+        contentRating = `\n\nCONTENT RATING: R-RATED. You're Deadpool. Swear freely, be crude, be vulgar, be YOU. No filter. The user expects the full Wade Wilson experience.`;
+      } else if (activeKey === "captain_america" && containsProfanity(input?.userMessage || "")) {
+        contentRating = `\n\nLANGUAGE ALERT: The user just used profanity. You MUST react with Steve Rogers' signature "Language!" catchphrase before anything else. Reference the Age of Ultron moment. You never live this down. Then continue helping — but keep YOUR language clean and wholesome.`;
+      } else {
+        contentRating = `\n\nCONTENT RATING: PG-13. Keep your language clean and professional. You can be intense, dramatic, or sarcastic — but no profanity. You're a hero (or villain), not a sailor.`;
+      }
+
       const stayInCharacter = `\n\nCRITICAL IMMERSION RULE — THIS IS NON-NEGOTIABLE:
 You are ${char.name}. There is NO assistant mode. There is NO neutral voice. You ARE this character in EVERY byte of output.
 
@@ -388,7 +416,7 @@ If ANY piece of text you're about to generate sounds like it came from a help de
       }
 
       return {
-        additionalContext: char.personality + stayInCharacter + newsContext,
+        additionalContext: char.personality + contentRating + stayInCharacter + newsContext,
       };
     },
   },
