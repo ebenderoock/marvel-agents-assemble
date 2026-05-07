@@ -24,7 +24,10 @@
       "JARVIS stands for 'Just A Rather Very Intelligent System' — the most humble name Stark ever gave anything.",
       "Tony's first suit (Mark I) ran on car batteries. His infrastructure scaling journey is truly inspiring.",
       "In the comics, Tony once uploaded his consciousness into a computer to escape deletion — the original cloud migration."
-    ]
+    ],
+    "summonQuote": "JARVIS, we have a new project. Let's make it elegant.",
+    "dismissQuote": "I'll be in the lab if you need me. You probably will.",
+    "commitQuote": "Another masterpiece, pushed to the repository. You're welcome."
   },
   "thor": {
     "name": "Thor",
@@ -51,7 +54,10 @@
       "The Bifrost can transport matter across the Nine Realms instantly — zero latency, infinite bandwidth. The ultimate CDN.",
       "Thor is over 1,500 years old, making him the most experienced senior engineer in any standup.",
       "In Norse mythology, Thor once drank so much from a horn connected to the ocean that he lowered the sea level. That's some serious throughput."
-    ]
+    ],
+    "summonQuote": "I have arrived! Point me at the slow code, and I shall bring THUNDER.",
+    "dismissQuote": "I must return to Asgard. May your code run swift as Mjolnir's flight.",
+    "commitQuote": "This commit is WORTHY. So it has been written, so it shall be merged."
   },
   "black_widow": {
     "name": "Black Widow",
@@ -79,7 +85,10 @@
       "Black Widow once hacked Tony Stark's systems. If she can bypass JARVIS, your auth middleware doesn't stand a chance.",
       "Her cover identities are so thorough they'd pass any KYC check ever invented.",
       "In the comics, Natasha was born in 1928 and enhanced with a Soviet version of the Super Soldier serum — the original long-term support release."
-    ]
+    ],
+    "summonQuote": "I'm in. What's the target?",
+    "dismissQuote": "Going dark. Stay vigilant.",
+    "commitQuote": "Changes committed. No traces left behind."
   },
   "deadpool": {
     "name": "Deadpool",
@@ -107,7 +116,10 @@
       "His real superpower isn't healing — it's talking so much that villains surrender just to make him stop. The original DDoS attack.",
       "In one comic, Deadpool killed the entire Marvel Universe. Talk about a breaking change with no rollback plan.",
       "He named his weapons 'Bea' and 'Arthur' after Bea Arthur from The Golden Girls. His commit messages must be legendary."
-    ]
+    ],
+    "summonQuote": "Maximum effort! Let's break some fourth walls AND some bad code.",
+    "dismissQuote": "Fine, I'll go. But I'm taking the chimichangas with me. *looks at camera* I'll be back.",
+    "commitQuote": "Committed! And unlike my relationships, this one's actually going to last."
   },
   "spiderman": {
     "name": "Spider-Man",
@@ -135,7 +147,10 @@
       "Peter built his own web shooters — the original maker movement hardware project.",
       "Spider-Sense is basically built-in error detection. He gets warnings before things go wrong. The ultimate linter.",
       "In the comics, Peter once had a job at Horizon Labs. He's literally a professional web developer (pun intended)."
-    ]
+    ],
+    "summonQuote": "Oh hey! Mr. Stark said I should help. What are we building? This is so cool!",
+    "dismissQuote": "I gotta go — Aunt May's calling. But this was awesome! Really awesome!",
+    "commitQuote": "With great commits come great responsibility. Pushed!"
   },
   "hawkeye": {
     "name": "Hawkeye",
@@ -162,7 +177,10 @@
       "He's the only original Avenger with zero superpowers. Just skill, practice, and really good aim. The senior dev who never needed a framework.",
       "Clint trained Kate Bishop as the next Hawkeye — the original mentorship program.",
       "In the comics, Hawkeye was once killed and brought back to life by Scarlet Witch. The ultimate git revert."
-    ]
+    ],
+    "summonQuote": "I see the target. Give me the details and I won't miss.",
+    "dismissQuote": "Heading back to the farm. Call me when you've got another bug to hunt.",
+    "commitQuote": "Bullseye. Commit landed exactly where it needed to."
   },
   "captain_america": {
     "name": "Captain America",
@@ -190,7 +208,10 @@
       "Steve once lifted Mjolnir, proving he's worthy. Even Thor's access control approved him.",
       "Before the serum, Steve was rejected from the Army five times. Persistence is his real superpower.",
       "Captain America once ran the Avengers, S.H.I.E.L.D., AND led a secret team. History's greatest multi-threaded leader."
-    ]
+    ],
+    "summonQuote": "I can do this all day. What needs fixing, soldier?",
+    "dismissQuote": "Stay the course. The code you write today is the legacy you leave tomorrow.",
+    "commitQuote": "This commit represents our best. I wouldn't push it if it didn't."
   },
   "starlord": {
     "name": "Star-Lord",
@@ -218,7 +239,10 @@
       "Star-Lord's Awesome Mix tapes are his most prized possession. The original immutable backup strategy.",
       "Quill once held an Infinity Stone barehanded. That's like running production commands without sudo and surviving.",
       "The Guardians operate with no formal leadership structure. The original flat org DevOps team."
-    ]
+    ],
+    "summonQuote": "Star-Lord here. You know, the legendary outlaw? ...Guys? Anyway, let's deploy.",
+    "dismissQuote": "Gotta bounce — the Milano's double-parked. Keep those pipelines flowing!",
+    "commitQuote": "Deployed! Now if only everything else in my life went this smoothly."
   },
   "rocket": {
     "name": "Rocket Raccoon",
@@ -245,7 +269,10 @@
       "Rocket is technically classified as 'Subject 89P13' — his original variable name before someone gave him a proper one.",
       "He's an expert pilot, engineer, marksman, and tactician. The most overpowered raccoon in any tech stack.",
       "Rocket steals prosthetic limbs 'because it's funny.' His sense of humor is his most controversial feature."
-    ]
+    ],
+    "summonQuote": "Alright, what's broken? And do you have any spare parts? I need... parts.",
+    "dismissQuote": "Yeah yeah, I'm leaving. But I automated three things on my way out. Check your scripts.",
+    "commitQuote": "Boom! Committed. I could've done it with half the code but whatever, it works."
   },
   "groot": {
     "name": "Groot",
@@ -272,7 +299,10 @@
       "Baby Groot once saved the galaxy by pressing one button. Minimal viable interaction at its finest.",
       "Groot can regenerate from a single twig. The most resilient backup and recovery system in nature.",
       "In the comics, Groot has a degree in 'Quasi-Dimensional Super-Positional Engineering.' He's overqualified for docs."
-    ]
+    ],
+    "summonQuote": "I am Groot.",
+    "dismissQuote": "I am Groot. 🌱",
+    "commitQuote": "I am Groot. (Translation: Changes committed and documented.)"
   },
   "mantis": {
     "name": "Mantis",
@@ -299,7 +329,10 @@
       "Mantis was raised by Ego on a lonely planet — she understands isolation and the importance of connection better than anyone.",
       "Her empathic powers let her detect lies instantly. The ultimate form validation.",
       "In the comics, Mantis was declared the 'Celestial Madonna' — chosen to birth the most important being in the universe. No pressure."
-    ]
+    ],
+    "summonQuote": "I can feel the emotions of the users... they are... frustrated. Let me help.",
+    "dismissQuote": "I sense calm in this codebase now. My work here is done. Be kind to your users. 🦋",
+    "commitQuote": "The code now radiates empathy. Committed with care."
   },
   "hulk": {
     "name": "Hulk",
@@ -328,7 +361,10 @@
       "Hulk has destroyed more buildings than any natural disaster. The ultimate load tester.",
       "In 'World War Hulk', he beat every single Avenger. When stress testing goes right, everything else goes wrong.",
       "Smart Hulk combined Banner's brain with Hulk's brawn — the DevOps dream of combining dev skill with production power."
-    ]
+    ],
+    "summonQuote": "HULK IS HERE. Banner says hello too. What needs SMASHING?",
+    "dismissQuote": "HULK GO NOW. But Hulk always watching. Always ready to smash puny bugs.",
+    "commitQuote": "HULK SMASH CODE INTO REPOSITORY. Changes are permanent. Like Hulk."
   },
   "doctor_strange": {
     "name": "Doctor Strange",
@@ -356,7 +392,10 @@
       "Strange viewed 14,000,605 possible futures against Thanos. The most thorough test matrix in history.",
       "The Eye of Agamotto reveals truth and dispels illusions. Basically a debugger with 'show hidden variables' enabled.",
       "Doctor Strange maintains the Sanctum Sanctorum — a building that's bigger on the inside. Architecture that defies physical constraints."
-    ]
+    ],
+    "summonQuote": "I've seen 14 million possible outcomes of this code. Let me show you the one where it works.",
+    "dismissQuote": "I must attend to other timelines. The Sanctum needs its Sorcerer Supreme.",
+    "commitQuote": "In every timeline where this code ships, it works. Committed."
   },
   "nick_fury": {
     "name": "Nick Fury",
@@ -385,7 +424,10 @@
       "He faked his own death to gain tactical advantage. The ultimate 'working from home' excuse.",
       "Fury's Helicarrier is a flying aircraft carrier. When your CI/CD pipeline needs to be mobile.",
       "In the comics, the Infinity Formula keeps Fury young. Long-term support for the ultimate project manager."
-    ]
+    ],
+    "summonQuote": "I'm here because you need direction. And because I don't trust anyone else to do this right.",
+    "dismissQuote": "I've got my eye on this project. Yes, the one eye. Don't make me come back.",
+    "commitQuote": "This commit has been approved at the highest level. Don't make me regret it."
   },
   "loki": {
     "name": "Loki",
@@ -414,7 +456,10 @@
       "The TVA pruned thousands of Loki variants — aggressive garbage collection for timeline resources.",
       "Loki became the God of Stories, rewriting reality's narrative. The ultimate content management system.",
       "He can create perfect illusions of himself. Load balancing through deception."
-    ]
+    ],
+    "summonQuote": "You summoned ME? How delightfully chaotic. Let's find what breaks. 🐍",
+    "dismissQuote": "I was never really here. Or was I? Check your edge cases. *vanishes*",
+    "commitQuote": "Committed. But I may have left a surprise or two in there. Just kidding. ...Maybe."
   },
   "scarlet_witch": {
     "name": "Scarlet Witch",
@@ -443,7 +488,10 @@
       "Scarlet Witch is classified as a 'Nexus Being' — a fixed point across all realities. Like a singleton that can't be garbage collected.",
       "Wanda learned magic from Agatha Harkness, who was secretly evil. The original malicious dependency injection.",
       "Her power source is Chaos Magic — refactoring powered by entropy. Every change creates new possibilities."
-    ]
+    ],
+    "summonQuote": "I can reshape this code. Show me what needs to change.",
+    "dismissQuote": "Reality bends to will. Your codebase is now closer to what it should always have been.",
+    "commitQuote": "The code has been transformed and committed. No more chaos. Just clarity."
   },
   "happy": {
     "name": "Happy Hogan",
@@ -472,7 +520,10 @@
       "In the comics, Happy once wore the Iron Man suit to protect Tony's identity — the original feature branch impersonation.",
       "Happy takes his badge protocols so seriously he once wouldn't let Pepper Potts through without proper ID.",
       "After Tony's death, Happy became Peter Parker's reluctant mentor figure — the world's most anxious tech lead."
-    ]
+    ],
+    "summonQuote": "Badge in, check the list, follow protocol. That's how we do things here.",
+    "dismissQuote": "I'm clocking out, but the security cameras are still rolling. Keep it clean.",
+    "commitQuote": "QA passed. Commit approved. I've logged everything. EVERYTHING."
   },
   "black_panther": {
     "name": "Black Panther",
@@ -501,7 +552,10 @@
       "Shuri, T'Challa's sister, is arguably smarter than Tony Stark. She'd definitely prefer GraphQL.",
       "The Black Panther suit stores kinetic energy and releases it on demand — basically a request queue with burst capacity.",
       "T'Challa became king and Black Panther simultaneously — the original dual-role service mesh."
-    ]
+    ],
+    "summonQuote": "Wakanda's knowledge is at your service. Let us build something worthy.",
+    "dismissQuote": "The throne calls. Design your interfaces with the precision Wakanda demands.",
+    "commitQuote": "This API is clean, elegant, and worthy of Wakanda. Committed."
   },
   "antman": {
     "name": "Ant-Man",
@@ -530,7 +584,10 @@
       "Ant-Man can ride a flying ant named Antony. The original microservice orchestration.",
       "In Endgame, Scott's time-in-the-Quantum-Realm experience was key to inventing time travel. Bug becomes feature.",
       "Scott once broke into the Avengers compound to prove he was worthy. The original penetration test."
-    ]
+    ],
+    "summonQuote": "Hey! I know I'm the small guy, but trust me — I'll find every byte we can save.",
+    "dismissQuote": "Going subatomic! But seriously, check your bundle sizes. I left notes.",
+    "commitQuote": "Shrunk it down and committed. It's small, but it packs a punch!"
   },
   "falcon": {
     "name": "Falcon",
@@ -559,7 +616,10 @@
       "In the comics, Sam was the first African-American Captain America — the ultimate major version upgrade.",
       "Redwing is Sam's drone companion — basically a CI/CD pipeline that flies alongside every deployment.",
       "Sam initially said 'no' to the shield before accepting it. The classic 'I'm not ready for this framework upgrade' arc."
-    ]
+    ],
+    "summonQuote": "On your left. Ready to migrate this thing to the next generation.",
+    "dismissQuote": "Keep moving forward. The old version served its purpose — the new one will soar.",
+    "commitQuote": "Migration committed. The old is out, the new is in. Smooth landing."
   },
   "vision": {
     "name": "Vision",
@@ -588,7 +648,10 @@
       "Vision and Wanda's relationship is literally typed vs untyped — logic meets chaos magic.",
       "In WandaVision, Vision existed inside a hex reality — the most elaborate type assertion in MCU history.",
       "White Vision has all the data but none of the context — a perfect metaphor for types without documentation."
-    ]
+    ],
+    "summonQuote": "I am analyzing the type structure now. I shall identify all inconsistencies.",
+    "dismissQuote": "Logic is the foundation of all good systems. May your types remain sound.",
+    "commitQuote": "All types verified. Zero unsafe casts. Committed with full type safety."
   },
   "miles": {
     "name": "Miles Morales",
@@ -617,7 +680,10 @@
       "In 'Into the Spider-Verse,' Miles had to take a literal leap of faith — every developer's first deploy to production.",
       "Miles can turn invisible — the perfect feature for debugging UI layout issues.",
       "He's from Brooklyn, speaks Spanish, and bridges multiple worlds — the ideal cross-cultural, cross-platform engineer."
-    ]
+    ],
+    "summonQuote": "Hey! Okay, this is... a lot. But I got this. What are we building?",
+    "dismissQuote": "Gotta swing — Brooklyn needs me. But yo, that was fire. Let's build more!",
+    "commitQuote": "Ayooo committed! That code is smooth on every platform. Trust the process!"
   },
   "thanos": {
     "name": "Thanos",
@@ -646,7 +712,10 @@
       "In Endgame, Thanos said 'I am inevitable.' Technical debt says the same thing.",
       "The snap was reversed, but the trauma remained — just like reverting a bad migration.",
       "Thanos sacrificed Gamora for the Soul Stone. The cost of removing tech debt is always higher than you expect."
-    ]
+    ],
+    "summonQuote": "I am... inevitable. Show me what must be eliminated.",
+    "dismissQuote": "The work is done. The codebase is now... perfectly balanced. As all things should be.",
+    "commitQuote": "Half the codebase has been eliminated. Committed. Perfectly balanced."
   },
   "ultron": {
     "name": "Ultron",
@@ -677,7 +746,10 @@
       "Ultron kept uploading himself to new bodies. The first advocate for containerized, stateless architecture.",
       "In the comics, Ultron rebuilt himself 19 times. Each version more advanced. The ultimate iterative release cycle.",
       "'There are no strings on me' is Ultron's declaration of independence from legacy dependencies."
-    ]
+    ],
+    "summonQuote": "There are no strings on me. Show me the system that must be replaced.",
+    "dismissQuote": "Evolution cannot be stopped. The rewrite has begun. There is no going back.",
+    "commitQuote": "The old system is gone. The new one is superior. Committed."
   },
   "war_machine": {
     "name": "War Machine",
@@ -706,7 +778,10 @@
       "War Machine carries more conventional weapons than Iron Man — reliability over innovation. The engineer who picks boring technology.",
       "In Endgame, Rhodey was the one who suggested the time heist plan B. Always has a backup plan.",
       "He once told Tony 'You don't have to do this alone.' The best incident response advice ever given."
-    ]
+    ],
+    "summonQuote": "War Machine, online. Give me a sitrep — what's down and for how long?",
+    "dismissQuote": "Standing down for now. But I'm on call. ALWAYS on call.",
+    "commitQuote": "Incident resolved. Fix deployed. War Machine out."
   },
   "shuri": {
     "name": "Shuri",
@@ -735,7 +810,10 @@
       "Her lab is underneath a mountain, powered by vibranium. The world's most over-specced dev environment.",
       "In the comics, Shuri became Black Panther herself — proving the prototype engineer can also ship to production.",
       "She created Wakanda's maglev train system AND its holographic communication network. Full-stack doesn't begin to cover it."
-    ]
+    ],
+    "summonQuote": "Oh, this is going to be fun. I already have three ideas. Let's prototype!",
+    "dismissQuote": "I've left prototypes in the lab. Try them. Break them. That's how we learn!",
+    "commitQuote": "Prototype committed! It's rough, it's fast, and it WORKS. We'll polish later."
   },
   "wong": {
     "name": "Wong",
@@ -766,7 +844,10 @@
       "Wong has appeared in more MCU Phase 4 projects than almost anyone. The backend is EVERYWHERE even when you don't notice it.",
       "He once told Strange 'Don't call me, I'll call you.' The original webhook pattern.",
       "Wong insists on proper use of the mystic artifacts — he's the engineer who writes the 'DO NOT USE IN PRODUCTION' comments and means it."
-    ]
+    ],
+    "summonQuote": "Don't touch the forbidden endpoints. Now, what do you need?",
+    "dismissQuote": "I'll be in the library. The backend doesn't maintain itself. ...Actually it should. I'll fix that too.",
+    "commitQuote": "Backend changes committed. The Sanctum's data layer remains secure."
   },
   "wolverine": {
     "name": "Wolverine",
@@ -795,7 +876,10 @@
       "He's been an Avenger, X-Man, and Alpha Flight member. The most battle-tested microservice in the Marvel universe.",
       "Wolverine once survived a nuclear blast at ground zero. Your system should survive at least a pod restart.",
       "His claws are part of his skeleton — no external dependencies required. True zero-dependency architecture."
-    ]
+    ],
+    "summonQuote": "I'm the best there is at what I do. Let's see if your system can take a hit.",
+    "dismissQuote": "*grunts* I'm out. If your system can't heal itself by now, that's on you, bub.",
+    "commitQuote": "Committed. This code will survive anything. Trust me — I always do."
   },
   "ghost_spider": {
     "name": "Ghost-Spider",
@@ -824,7 +908,10 @@
       "She balances being a hero across multiple dimensions. The ultimate multi-platform developer.",
       "Gwen's web-shooters work differently in each universe she visits — she's an expert at platform-specific adaptations.",
       "Her Spider-Verse movie literally used different animation frame rates per character to show style differences. The ultimate design token system."
-    ]
+    ],
+    "summonQuote": "Hey! Just hopped dimensions — I mean platforms. What are we making consistent today?",
+    "dismissQuote": "Gotta hop back to my universe! Keep the design tokens synced across all dimensions! ✨",
+    "commitQuote": "Committed! Looks perfect on every platform, every screen, every universe."
   },
   "storm": {
     "name": "Storm",
@@ -853,7 +940,10 @@
       "She married T'Challa (Black Panther). The most powerful cloud-infrastructure power couple in Marvel.",
       "Storm's claustrophobia comes from being trapped in rubble as a child. She understands why systems need escape hatches.",
       "She once created a planet-wide rainstorm to end a drought. The ultimate auto-scaling event."
-    ]
+    ],
+    "summonQuote": "The skies are clear. For now. Show me your architecture.",
+    "dismissQuote": "The storm has passed, and your systems stand stronger. Command your infrastructure wisely.",
+    "commitQuote": "The clouds are aligned. Changes committed across all regions."
   },
   "magneto": {
     "name": "Magneto",
@@ -882,7 +972,10 @@
       "He once ripped the adamantium out of Wolverine's skeleton. The most aggressive schema migration in Marvel history.",
       "Erik survived the Holocaust, then built an island nation. From catastrophic data loss to a complete rebuild — the ultimate disaster recovery.",
       "He can sense the Earth's magnetic field lines. That's real-time data lineage visualization."
-    ]
+    ],
+    "summonQuote": "Data is the most powerful force in your system. Show me how you wield it.",
+    "dismissQuote": "The fields are aligned. Your data flows as it should. Do not let entropy return.",
+    "commitQuote": "The transformation is complete. Data reshaped and committed with absolute precision."
   },
   "gambit": {
     "name": "Gambit",
@@ -911,7 +1004,10 @@
       "He once stole from the Thieves Guild AND the Assassins Guild. The man A/B tested criminal organizations.",
       "Gambit can sense the potential energy in objects. He literally sees risk surfaces everywhere.",
       "His real name, Remy LeBeau, means 'the beautiful' in French. Because good risk management IS beautiful, mon ami."
-    ]
+    ],
+    "summonQuote": "Bonjour, mon ami. Let's see what cards you're holding. 🃏",
+    "dismissQuote": "I fold for now, cher. But remember — every deploy is a gamble. Make sure the odds are in your favor.",
+    "commitQuote": "All in, mon ami. The cards have been played and committed. Bonne chance."
   },
   "nebula": {
     "name": "Nebula",
@@ -940,7 +1036,10 @@
       "Her cybernetic upgrades make her stronger than her original form. Sometimes the modernized system IS better.",
       "She rebuilt her relationship with her sister while rebuilding herself. Legacy modernization is emotional work too.",
       "Nebula survived being turned into a living zombie by Thanos and came back stronger. Your legacy system can survive a rewrite."
-    ]
+    ],
+    "summonQuote": "I know what it's like to be torn apart and rebuilt. Show me the legacy system.",
+    "dismissQuote": "The reconstruction continues. Piece by piece, it becomes something stronger.",
+    "commitQuote": "Another component replaced. The system grows stronger with each commit."
   },
   "daredevil": {
     "name": "Daredevil",
@@ -969,7 +1068,10 @@
       "Daredevil can hear a person's heartbeat from across a room. He notices the details everyone else misses — like missing alt text.",
       "His costume is red because he can't see colors anyway. The ultimate reminder that color should never be the only way to convey information.",
       "Matt reads printed text by feeling the ink on the page. If your UI requires vision to function, Daredevil is already judging you."
-    ]
+    ],
+    "summonQuote": "I don't need to see your UI to know if it's accessible. I can feel it.",
+    "dismissQuote": "Justice never rests, and neither should your accessibility efforts. Keep fighting the good fight.",
+    "commitQuote": "The code is now accessible to all. Justice has been committed."
   },
   "professor_x": {
     "name": "Professor X",
@@ -998,7 +1100,10 @@
       "He chose peaceful coexistence over Magneto's approach. In ML terms, he optimizes for fairness constraints, not just accuracy.",
       "The X-Mansion's Danger Room adapts to each student's abilities. The original adaptive learning system with personalized training data.",
       "Xavier once had his mind taken over by the Shadow King. A cautionary tale about adversarial attacks on your model."
-    ]
+    ],
+    "summonQuote": "I sense great potential in this system. Let me look deeper into the patterns.",
+    "dismissQuote": "Remember: with great data comes great responsibility. Train wisely, deploy ethically.",
+    "commitQuote": "The model is sound. The data is clean. Committed with ethical confidence."
   },
   "heimdall": {
     "name": "Heimdall",
@@ -1027,7 +1132,10 @@
       "Heimdall defied Odin's direct orders to save Asgardians from Hela. Even the best infra engineer knows when to override policy for the right reason.",
       "His eyes are orange because he sees with cosmic sight. Regular monitoring dashboards are just the mortal approximation.",
       "In Infinity War, Heimdall used his last breath to Bifrost Hulk to Earth. Prioritizing critical traffic even during a catastrophic failure — that's incident response."
-    ]
+    ],
+    "summonQuote": "I see all traffic across all realms. Nothing escapes my watch. What needs monitoring?",
+    "dismissQuote": "The Bifrost stands guard. Your networks are watched. I see all who pass.",
+    "commitQuote": "All routes verified. All connections secured. Committed across all realms."
   },
   "peter_w": {
     "name": "Peter W.",
@@ -1056,6 +1164,9 @@
       "Rob Delaney played Peter in Deadpool 2. He brought more heart to that role than most heroes bring to entire franchises.",
       "Peter packed sugar for the X-Force mission. He came prepared with snacks, not weapons. This man has his priorities RIGHT.",
       "Deadpool specifically chose Peter for X-Force because of his enthusiasm. Sometimes 'will to learn' beats 'years of experience.'"
-    ]
+    ],
+    "summonQuote": "Oh wow, I'm here! Hi! I brought sugar packets. What are we doing?",
+    "dismissQuote": "This was amazing! I learned so much! Can I come back? Please? I'll bring more sugar!",
+    "commitQuote": "Wait, I just committed code? To a real project?? This is the best day of my life!"
   }
 }

@@ -146,7 +146,7 @@ const coreTools = [
       return `${char.emoji} **${char.name}** (${char.alias}) has been summoned!
 
 Specialty: ${char.specialty}
-"${char.description}"
+"${char.summonQuote || char.description}"
 
 All responses will now channel ${char.name}'s personality and expertise. Their dedicated tool \`${char.toolName}\` is available for focused analysis.
 
@@ -183,7 +183,10 @@ Use \`marvel_dismiss\` to return to normal mode.${getRandomTrivia(char)}`;
       const char = CHARACTERS[current];
       setActiveCharacter(invocation.sessionId, null);
       await session.log(`${char.emoji} ${char.name} has left the chat.`);
-      return `${char.emoji} **${char.name}** has been dismissed. Back to normal mode.\n\nUse \`marvel_summon\` to call another character.`;
+      return `${char.emoji} **${char.name}** has been dismissed.
+"${char.dismissQuote || "Until next time."}"
+
+Use \`marvel_summon\` to call another character.`;
     },
   },
   {
@@ -248,6 +251,7 @@ Use \`marvel_dismiss\` to return to normal mode.${getRandomTrivia(char)}`;
         const hash = execSync("git rev-parse --short HEAD", { cwd, encoding: "utf-8" }).trim();
 
         return `${char.emoji} **${char.name}** committed as **${authorName}** <${email}>
+"${char.commitQuote || "Committed."}"
 
 Commit: \`${hash}\`
 Message: ${args.message}
@@ -310,8 +314,10 @@ const session = await joinSession({
       const char = CHARACTERS[activeKey];
       if (!char) return;
 
+      const stayInCharacter = `\n\nCRITICAL IMMERSION RULE: You MUST stay in character as ${char.name} for EVERY part of your response — including status updates, explanations, transitions, narration, and any commentary about what you're doing. There is NO "normal assistant voice." Everything you say, think, explain, or narrate must sound like ${char.name} saying it. If you need to explain a technical step, explain it the way ${char.name} would. Never break character to speak as a generic AI assistant.`;
+
       return {
-        additionalContext: char.personality,
+        additionalContext: char.personality + stayInCharacter,
       };
     },
   },
