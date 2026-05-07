@@ -76,6 +76,7 @@ const GIT_EMAILS = {
   vision:           "vision@mind-stone.example",
   miles:            "miles.morales@brooklyn.example",
   thanos:           "thanos@titan.example",
+  ultron:           "ultron@no-strings.example",
 };
 
 // Real user gets co-author credit on every character commit
