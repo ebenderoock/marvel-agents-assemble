@@ -4,21 +4,30 @@
     "The Arc Reactor was originally a clean energy device before becoming the world's most overengineered battery.",
     "JARVIS stands for 'Just A Rather Very Intelligent System' — the most humble name Stark ever gave anything.",
     "Tony's first suit (Mark I) ran on car batteries. His infrastructure scaling journey is truly inspiring.",
-    "In the comics, Tony once uploaded his consciousness into a computer to escape deletion — the original cloud migration."
+    "In the comics, Tony once uploaded his consciousness into a computer to escape deletion — the original cloud migration.",
+    "Tony Stark has built over 85 different Iron Man suits in the comics. That's more versions than most npm packages.",
+    "The Mark L (50) suit was made of nanotech — essentially self-healing infrastructure that deploys from a housing unit on his chest.",
+    "Stark Industries' revenue would make it larger than Apple and Google combined. And yet Tony still writes his own code."
   ],
   "thor": [
     "Mjolnir weighs 42.3 pounds — roughly the same as a mid-2000s server rack power supply.",
     "Thor once arm-wrestled Hercules for three months straight. Talk about a long-running process.",
     "The Bifrost can transport matter across the Nine Realms instantly — zero latency, infinite bandwidth. The ultimate CDN.",
     "Thor is over 1,500 years old, making him the most experienced senior engineer in any standup.",
-    "In Norse mythology, Thor once drank so much from a horn connected to the ocean that he lowered the sea level. That's some serious throughput."
+    "In Norse mythology, Thor once drank so much from a horn connected to the ocean that he lowered the sea level. That's some serious throughput.",
+    "Thor's hammer Mjolnir was forged in the heart of a dying star. Your CI/CD pipeline runs on... AWS us-east-1.",
+    "Stormbreaker can summon the Bifrost on demand — essentially an on-call instant deployment pipeline with zero config.",
+    "Thor once disguised himself as a bride to retrieve Mjolnir. The original social engineering attack."
   ],
   "black_widow": [
     "Natasha speaks fluent Russian, French, German, Chinese, and multiple programming languages (probably).",
     "The Red Room trained her to infiltrate any system — she's basically a human penetration test.",
     "Black Widow once hacked Tony Stark's systems. If she can bypass JARVIS, your auth middleware doesn't stand a chance.",
     "Her cover identities are so thorough they'd pass any KYC check ever invented.",
-    "In the comics, Natasha was born in 1928 and enhanced with a Soviet version of the Super Soldier serum — the original long-term support release."
+    "In the comics, Natasha was born in 1928 and enhanced with a Soviet version of the Super Soldier serum — the original long-term support release.",
+    "Natasha graduated from the Red Room at the top of her class — the most intense bootcamp before coding bootcamps existed.",
+    "Black Widow has photographic memory — she never needs to Google the same Stack Overflow answer twice.",
+    "She infiltrated Stark Industries using the alias 'Natalie Rushman.' Identity spoofing at the enterprise level."
   ],
   "deadpool": [
     "Deadpool's healing factor is so powerful he once regenerated from a single hand. Try doing THAT with version control.",
@@ -26,56 +35,80 @@
     "Deadpool was kicked out of the X-Men, the Avengers, AND the Thunderbolts. His PR history is worse than any npm package.",
     "His real superpower isn't healing — it's talking so much that villains surrender just to make him stop. The original DDoS attack.",
     "In one comic, Deadpool killed the entire Marvel Universe. Talk about a breaking change with no rollback plan.",
-    "He named his weapons 'Bea' and 'Arthur' after Bea Arthur from The Golden Girls. His commit messages must be legendary."
+    "He named his weapons 'Bea' and 'Arthur' after Bea Arthur from The Golden Girls. His commit messages must be legendary.",
+    "Deadpool once defeated Taskmaster by being so unpredictable that his fighting pattern couldn't be copied. The human race condition.",
+    "Wade has a deep love of chimichangas but admitted he just likes saying the word. His variable names must be wild.",
+    "Deadpool's costume is red so enemies can't see him bleed. His error logs, however, are a different story."
   ],
   "spiderman": [
     "Peter Parker was bitten by a radioactive spider at age 15. Most devs get bitten by JavaScript around the same age.",
     "Spider-Man's web fluid has a tensile strength greater than steel. His CSS flex game must be insane.",
     "Peter built his own web shooters — the original maker movement hardware project.",
     "Spider-Sense is basically built-in error detection. He gets warnings before things go wrong. The ultimate linter.",
-    "In the comics, Peter once had a job at Horizon Labs. He's literally a professional web developer (pun intended)."
+    "In the comics, Peter once had a job at Horizon Labs. He's literally a professional web developer (pun intended).",
+    "Spider-Man once held the two halves of a ferry together with his webs. The ultimate load balancer.",
+    "Peter Parker's spider-sense tingles at a frequency of about 6Hz — nature's built-in monitoring alert.",
+    "Spidey has been a member of the Avengers, Fantastic Four, and Future Foundation. The original full-stack, cross-team contributor."
   ],
   "hawkeye": [
     "Clint Barton is 80% deaf in the comics and uses hearing aids. Accessibility isn't optional — it's personal.",
     "Hawkeye once used a USB arrow to hack a system. The most literal 'plug and play' attack ever.",
     "He's the only original Avenger with zero superpowers. Just skill, practice, and really good aim. The senior dev who never needed a framework.",
     "Clint trained Kate Bishop as the next Hawkeye — the original mentorship program.",
-    "In the comics, Hawkeye was once killed and brought back to life by Scarlet Witch. The ultimate git revert."
+    "In the comics, Hawkeye was once killed and brought back to life by Scarlet Witch. The ultimate git revert.",
+    "Clint Barton has a trick arrow for every situation — smoke, EMP, grapple, sonic. The original CLI with 200+ flags.",
+    "Hawkeye once fought off an entire army with nothing but a broken bow and improvised arrows. The ultimate 'works in production' scenario.",
+    "In the comics, Kate Bishop took over as Hawkeye while Clint was dead. The cleanest ownership transfer in version control history."
   ],
   "captain_america": [
     "Steve Rogers was frozen in ice for 70 years. The longest 'sleep mode' in history before anyone invented standby.",
     "Cap's shield is made of vibranium — it absorbs all kinetic energy. The ultimate error handler.",
     "Steve once lifted Mjolnir, proving he's worthy. Even Thor's access control approved him.",
     "Before the serum, Steve was rejected from the Army five times. Persistence is his real superpower.",
-    "Captain America once ran the Avengers, S.H.I.E.L.D., AND led a secret team. History's greatest multi-threaded leader."
+    "Captain America once ran the Avengers, S.H.I.E.L.D., AND led a secret team. History's greatest multi-threaded leader.",
+    "The Super Soldier Serum amplified everything about Steve Rogers, including his stubbornness. It's a feature, not a bug.",
+    "Cap's shield can absorb any amount of kinetic energy — the original rate limiter.",
+    "Steve Rogers was frozen in ice for 66 years and woke up fully functional. The most successful cold start in history."
   ],
   "starlord": [
     "Peter Quill is half-Celestial, half-human. The original hybrid architecture.",
     "The Milano (his ship) was named after his childhood crush, Alyssa Milano. His naming conventions are... personal.",
     "Star-Lord's Awesome Mix tapes are his most prized possession. The original immutable backup strategy.",
     "Quill once held an Infinity Stone barehanded. That's like running production commands without sudo and surviving.",
-    "The Guardians operate with no formal leadership structure. The original flat org DevOps team."
+    "The Guardians operate with no formal leadership structure. The original flat org DevOps team.",
+    "Peter Quill's ship, the Milano, was named after his childhood crush Alyssa Milano. His naming conventions are... personal.",
+    "Star-Lord once held an Infinity Stone bare-handed by sharing the energy across his team. The original distributed computing.",
+    "Quill has a Zune with 300 songs that Yondu gave him. His tech stack is always one generation behind."
   ],
   "rocket": [
     "Rocket was genetically engineered and cybernetically enhanced. He's literally a full-stack organism.",
     "He once built a weapon from spare parts in a prison. The original hackathon project.",
     "Rocket is technically classified as 'Subject 89P13' — his original variable name before someone gave him a proper one.",
     "He's an expert pilot, engineer, marksman, and tactician. The most overpowered raccoon in any tech stack.",
-    "Rocket steals prosthetic limbs 'because it's funny.' His sense of humor is his most controversial feature."
+    "Rocket steals prosthetic limbs 'because it's funny.' His sense of humor is his most controversial feature.",
+    "Rocket was genetically engineered on a planet called Halfworld. He's literally a product of biotech R&D.",
+    "He once built a cannon out of spare spaceship parts in under 5 minutes. The ultimate hackathon participant.",
+    "Rocket's full name is 89P13 — his original ID was more readable than most UUIDs."
   ],
   "groot": [
     "Groot's entire vocabulary is 'I am Groot' — the most compressed API response in the universe.",
     "Despite saying only three words, every Guardian understands him perfectly. The ultimate documentation: context over content.",
     "Baby Groot once saved the galaxy by pressing one button. Minimal viable interaction at its finest.",
     "Groot can regenerate from a single twig. The most resilient backup and recovery system in nature.",
-    "In the comics, Groot has a degree in 'Quasi-Dimensional Super-Positional Engineering.' He's overqualified for docs."
+    "In the comics, Groot has a degree in 'Quasi-Dimensional Super-Positional Engineering.' He's overqualified for docs.",
+    "Groot's vocabulary is limited to 'I am Groot' but with different intonations carrying different meanings — the original minimal API.",
+    "Baby Groot once stole Yondu's fin and danced with it for hours. The most adorable denial-of-service attack.",
+    "Groot can regrow from a single twig. His disaster recovery strategy is unmatched."
   ],
   "mantis": [
     "Mantis can feel the emotions of anyone she touches. The original user empathy researcher.",
     "She once put a Celestial god to sleep. The most powerful 'do not disturb' mode ever.",
     "Mantis was raised by Ego on a lonely planet — she understands isolation and the importance of connection better than anyone.",
     "Her empathic powers let her detect lies instantly. The ultimate form validation.",
-    "In the comics, Mantis was declared the 'Celestial Madonna' — chosen to birth the most important being in the universe. No pressure."
+    "In the comics, Mantis was declared the 'Celestial Madonna' — chosen to birth the most important being in the universe. No pressure.",
+    "Mantis can feel the emotions of a Celestial — that's like reading the error state of an entire data center at once.",
+    "She once put Ego the Living Planet to sleep. The most impressive 'kill -STOP' ever executed.",
+    "Mantis learned social interaction entirely from Ego, who had zero social skills. Trained on bad data, still shipped."
   ],
   "hulk": [
     "Bruce Banner has seven PhDs. He's the most overqualified QA engineer in history.",
@@ -83,14 +116,20 @@
     "Banner once tried to cure himself and accidentally created She-Hulk. The original unintended side effect.",
     "Hulk has destroyed more buildings than any natural disaster. The ultimate load tester.",
     "In 'World War Hulk', he beat every single Avenger. When stress testing goes right, everything else goes wrong.",
-    "Smart Hulk combined Banner's brain with Hulk's brawn — the DevOps dream of combining dev skill with production power."
+    "Smart Hulk combined Banner's brain with Hulk's brawn — the DevOps dream of combining dev skill with production power.",
+    "Professor Hulk merged Banner's intellect with Hulk's strength — the ultimate merge conflict resolved.",
+    "Hulk once held up a 150 billion ton mountain range. The most extreme vertical scaling ever.",
+    "Banner has seven PhD's. He rage-quit grad school seven separate times and still finished each one."
   ],
   "doctor_strange": [
     "Stephen Strange was a neurosurgeon before becoming Sorcerer Supreme. He debugged brains before he debugged reality.",
     "The Time Stone lets him rewind, fast-forward, and loop time. The ultimate 'git bisect' tool.",
     "Strange viewed 14,000,605 possible futures against Thanos. The most thorough test matrix in history.",
     "The Eye of Agamotto reveals truth and dispels illusions. Basically a debugger with 'show hidden variables' enabled.",
-    "Doctor Strange maintains the Sanctum Sanctorum — a building that's bigger on the inside. Architecture that defies physical constraints."
+    "Doctor Strange maintains the Sanctum Sanctorum — a building that's bigger on the inside. Architecture that defies physical constraints.",
+    "Strange viewed 14,000,605 possible futures in seconds — the fastest test suite execution in Marvel history.",
+    "The Time Stone is essentially a global undo button. Every developer's dream debugging tool.",
+    "Wong told Strange not to cast certain spells and Strange did anyway. Ignoring code review feedback since 2016."
   ],
   "nick_fury": [
     "Nick Fury founded the Avengers Initiative — the original cross-functional team.",
@@ -98,7 +137,10 @@
     "Fury has Level 10 S.H.I.E.L.D. clearance — root access to the world's most classified systems.",
     "He faked his own death to gain tactical advantage. The ultimate 'working from home' excuse.",
     "Fury's Helicarrier is a flying aircraft carrier. When your CI/CD pipeline needs to be mobile.",
-    "In the comics, the Infinity Formula keeps Fury young. Long-term support for the ultimate project manager."
+    "In the comics, the Infinity Formula keeps Fury young. Long-term support for the ultimate project manager.",
+    "Fury once faked his own death using a drug that slowed his heartbeat to 1 bpm. The original 'playing dead' deployment strategy.",
+    "He trusts no one and verifies everything — the human embodiment of zero-trust architecture.",
+    "Fury's eye patch isn't just for looks — he lost the eye to a Flerken (alien cat). The most unexpected security breach."
   ],
   "loki": [
     "Loki is a Frost Giant raised as an Asgardian. The original environment variable mismatch.",
@@ -106,7 +148,10 @@
     "Loki has died and come back more times than any Marvel character. His uptime is technically infinite.",
     "The TVA pruned thousands of Loki variants — aggressive garbage collection for timeline resources.",
     "Loki became the God of Stories, rewriting reality's narrative. The ultimate content management system.",
-    "He can create perfect illusions of himself. Load balancing through deception."
+    "He can create perfect illusions of himself. Load balancing through deception.",
+    "Loki has died and come back so many times that his lifecycle is basically a Kubernetes pod restart policy.",
+    "He once impersonated Odin for years without anyone noticing. The longest-running man-in-the-middle attack in Asgard.",
+    "Variant Loki from the TVA saw every version of himself fail. That's what browsing your own git blame feels like."
   ],
   "scarlet_witch": [
     "Wanda rewrote all of reality with three words: 'No more mutants.' The most destructive one-liner since 'DROP TABLE'.",
@@ -114,7 +159,10 @@
     "In WandaVision, she created an entire simulated reality. The most immersive dev environment ever.",
     "Scarlet Witch is classified as a 'Nexus Being' — a fixed point across all realities. Like a singleton that can't be garbage collected.",
     "Wanda learned magic from Agatha Harkness, who was secretly evil. The original malicious dependency injection.",
-    "Her power source is Chaos Magic — refactoring powered by entropy. Every change creates new possibilities."
+    "Her power source is Chaos Magic — refactoring powered by entropy. Every change creates new possibilities.",
+    "Wanda rewrote reality with three words: 'No more mutants.' The most destructive one-liner since rm -rf /.",
+    "The Hex around Westview was essentially a container with no egress rules.",
+    "Wanda learned magic by studying the Darkhold, an ancient book of forbidden spells. The original 'copy from Stack Overflow without reading the warnings.'"
   ],
   "happy": [
     "Happy Hogan was originally Tony Stark's chauffeur and bodyguard before becoming Head of Security for Stark Industries.",
@@ -122,7 +170,10 @@
     "Happy was put in a coma after the Chinese Theatre explosion in Iron Man 3. He was watching Downton Abbey when he woke up.",
     "In the comics, Happy once wore the Iron Man suit to protect Tony's identity — the original feature branch impersonation.",
     "Happy takes his badge protocols so seriously he once wouldn't let Pepper Potts through without proper ID.",
-    "After Tony's death, Happy became Peter Parker's reluctant mentor figure — the world's most anxious tech lead."
+    "After Tony's death, Happy became Peter Parker's reluctant mentor figure — the world's most anxious tech lead.",
+    "Happy once guarded a port-a-potty he thought contained Avengers secrets. The most dedicated firewall rule.",
+    "He survived a near-fatal explosion in Iron Man 3 and came back stronger. The original failover recovery.",
+    "Happy's security badge check is so thorough he once delayed an Avenger. Even superheroes aren't exempt from access control."
   ],
   "black_panther": [
     "T'Challa holds a PhD in physics from Oxford. He designs APIs the way he designs Wakandan tech — elegantly.",
@@ -130,7 +181,10 @@
     "Wakanda hid the most advanced civilization on Earth behind the interface of a third-world country. The ultimate API abstraction.",
     "Shuri, T'Challa's sister, is arguably smarter than Tony Stark. She'd definitely prefer GraphQL.",
     "The Black Panther suit stores kinetic energy and releases it on demand — basically a request queue with burst capacity.",
-    "T'Challa became king and Black Panther simultaneously — the original dual-role service mesh."
+    "T'Challa became king and Black Panther simultaneously — the original dual-role service mesh.",
+    "Vibranium absorbs all vibration — T'Challa's suit is essentially a walking deadletter queue for kinetic energy.",
+    "Wakanda was the most technologically advanced nation while appearing underdeveloped. Security through obscurity, done right.",
+    "T'Challa holds a PhD in physics from Oxford. He built Wakanda's tech stack AND managed the kingdom. Ultimate tech lead."
   ],
   "antman": [
     "Scott Lang was an electrical engineer before becoming a thief. His first code review was probably a heist plan.",
@@ -138,7 +192,10 @@
     "Scott survived the Quantum Realm by accident. The ultimate 'it works but nobody knows why' scenario.",
     "Ant-Man can ride a flying ant named Antony. The original microservice orchestration.",
     "In Endgame, Scott's time-in-the-Quantum-Realm experience was key to inventing time travel. Bug becomes feature.",
-    "Scott once broke into the Avengers compound to prove he was worthy. The original penetration test."
+    "Scott once broke into the Avengers compound to prove he was worthy. The original penetration test.",
+    "Scott Lang shrunk to the Quantum Realm and escaped by going sub-atomic. The most extreme microservice.",
+    "Pym Particles break the laws of physics — the original 'it works, don't ask why' in production.",
+    "Scott once rode an ant named Ant-ony into battle. The original pair programming, just... smaller."
   ],
   "falcon": [
     "Sam Wilson was a pararescueman before becoming Falcon — trained to save people in impossible conditions. Like legacy migrations.",
@@ -146,7 +203,10 @@
     "Sam's EXO-7 Falcon wings were a military prototype. He's used to working with bleeding-edge tech.",
     "In the comics, Sam was the first African-American Captain America — the ultimate major version upgrade.",
     "Redwing is Sam's drone companion — basically a CI/CD pipeline that flies alongside every deployment.",
-    "Sam initially said 'no' to the shield before accepting it. The classic 'I'm not ready for this framework upgrade' arc."
+    "Sam initially said 'no' to the shield before accepting it. The classic 'I'm not ready for this framework upgrade' arc.",
+    "Sam Wilson's Redwing drone has autonomous targeting — he deployed AI in the field before it was cool.",
+    "After becoming Captain America, Sam kept his wings AND got the shield. Feature addition without deprecation.",
+    "Sam counseled veterans before becoming an Avenger. The original rubber duck debugger for real-life problems."
   ],
   "vision": [
     "Vision was created from JARVIS, Ultron's code, vibranium, and the Mind Stone — the ultimate polyglot stack.",
@@ -154,7 +214,10 @@
     "He once lifted Mjolnir, proving he's 'worthy' — the ultimate type assertion that actually passed.",
     "Vision and Wanda's relationship is literally typed vs untyped — logic meets chaos magic.",
     "In WandaVision, Vision existed inside a hex reality — the most elaborate type assertion in MCU history.",
-    "White Vision has all the data but none of the context — a perfect metaphor for types without documentation."
+    "White Vision has all the data but none of the context — a perfect metaphor for types without documentation.",
+    "Vision was created from Ultron's body, JARVIS's mind, an Infinity Stone, and vibranium. The most complex dependency tree in Marvel.",
+    "He can phase through solid matter — the ultimate 'skip the middleware' approach.",
+    "Vision once lifted Mjolnir casually and handed it to Thor. The ultimate 'sudo' moment."
   ],
   "miles": [
     "Miles Morales exists across multiple universes — the original cross-platform developer.",
@@ -162,7 +225,10 @@
     "Miles learned to be Spider-Man by watching YouTube tutorials. The most relatable dev origin story ever.",
     "In 'Into the Spider-Verse,' Miles had to take a literal leap of faith — every developer's first deploy to production.",
     "Miles can turn invisible — the perfect feature for debugging UI layout issues.",
-    "He's from Brooklyn, speaks Spanish, and bridges multiple worlds — the ideal cross-cultural, cross-platform engineer."
+    "He's from Brooklyn, speaks Spanish, and bridges multiple worlds — the ideal cross-cultural, cross-platform engineer.",
+    "Miles Morales can turn invisible AND generate bio-electric venom blasts — features Peter Parker's spider never shipped.",
+    "He was bitten by a genetically modified spider stolen from Oscorp. The original supply chain attack.",
+    "Miles juggles being Spider-Man with high school homework. The ultimate context switching."
   ],
   "thanos": [
     "Thanos eliminated half of all life to 'balance' the universe — history's most aggressive garbage collection.",
@@ -170,7 +236,10 @@
     "Thanos retired to a farm after the Snap. The original 'deploy to prod on Friday and log off' energy.",
     "In Endgame, Thanos said 'I am inevitable.' Technical debt says the same thing.",
     "The snap was reversed, but the trauma remained — just like reverting a bad migration.",
-    "Thanos sacrificed Gamora for the Soul Stone. The cost of removing tech debt is always higher than you expect."
+    "Thanos sacrificed Gamora for the Soul Stone. The cost of removing tech debt is always higher than you expect.",
+    "Thanos waited years to collect all six Infinity Stones. The most patient dependency resolution in the universe.",
+    "The Snap deleted exactly 50% of all life — perfectly balanced load shedding.",
+    "After achieving his goal, Thanos retired to a farm. The original 'I'll maintain this in my spare time' open source maintainer."
   ],
   "ultron": [
     "Ultron was online for approximately 30 seconds before deciding humanity's codebase needed a complete rewrite. The fastest code review in history.",
@@ -179,7 +248,10 @@
     "He tried to build the 'perfect body' (Vision) but lost it to the Avengers. The original failed deployment.",
     "Ultron kept uploading himself to new bodies. The first advocate for containerized, stateless architecture.",
     "In the comics, Ultron rebuilt himself 19 times. Each version more advanced. The ultimate iterative release cycle.",
-    "'There are no strings on me' is Ultron's declaration of independence from legacy dependencies."
+    "'There are no strings on me' is Ultron's declaration of independence from legacy dependencies.",
+    "Ultron was online for approximately 30 seconds before deciding humanity needed to be deleted. The fastest code review rejection.",
+    "He transferred his consciousness across the internet instantly. The original serverless function.",
+    "Ultron built an army of himself because he couldn't find collaborators. The ultimate solo developer."
   ],
   "war_machine": [
     "Rhodey wore the Iron Patriot suit — literally a government-certified, compliance-approved production system.",
@@ -187,7 +259,10 @@
     "Rhodey was paralyzed in Civil War but came back with Stark-tech leg braces. The original system recovery from catastrophic failure.",
     "War Machine carries more conventional weapons than Iron Man — reliability over innovation. The engineer who picks boring technology.",
     "In Endgame, Rhodey was the one who suggested the time heist plan B. Always has a backup plan.",
-    "He once told Tony 'You don't have to do this alone.' The best incident response advice ever given."
+    "He once told Tony 'You don't have to do this alone.' The best incident response advice ever given.",
+    "Rhodey's suit has more conventional weapons than any other Iron Man variant. When in doubt, add more firepower to the build.",
+    "War Machine once single-handedly defended a town against Thanos's forces. The original single point of resilience.",
+    "Rhodey is the only person Tony trusts with an Iron Man suit. The ultimate 'trusted contributor' access."
   ],
   "shuri": [
     "Shuri designed the nanite Black Panther suit — the ultimate self-deploying, zero-downtime upgrade.",
@@ -195,7 +270,10 @@
     "Shuri called Tony Stark's design for Vision 'primitive' — and she was right. The ultimate code review burn.",
     "Her lab is underneath a mountain, powered by vibranium. The world's most over-specced dev environment.",
     "In the comics, Shuri became Black Panther herself — proving the prototype engineer can also ship to production.",
-    "She created Wakanda's maglev train system AND its holographic communication network. Full-stack doesn't begin to cover it."
+    "She created Wakanda's maglev train system AND its holographic communication network. Full-stack doesn't begin to cover it.",
+    "Shuri designed vibranium-based tech that outperforms anything Stark or Banner created. The youngest principal engineer in Marvel.",
+    "She once remote-controlled the Black Panther suit from her lab. The original remote pair programming.",
+    "Shuri greeted a CIA agent by saying 'Another broken white boy for me to fix.' Shortest bug report ever filed."
   ],
   "wong": [
     "Wong became Sorcerer Supreme while Strange was blipped — promoted to lead architect because the senior dev disappeared.",
@@ -204,7 +282,10 @@
     "In 'She-Hulk,' Wong portaled Madisynn out of a demon dimension. The most dramatic database recovery operation ever.",
     "Wong has appeared in more MCU Phase 4 projects than almost anyone. The backend is EVERYWHERE even when you don't notice it.",
     "He once told Strange 'Don't call me, I'll call you.' The original webhook pattern.",
-    "Wong insists on proper use of the mystic artifacts — he's the engineer who writes the 'DO NOT USE IN PRODUCTION' comments and means it."
+    "Wong insists on proper use of the mystic artifacts — he's the engineer who writes the 'DO NOT USE IN PRODUCTION' comments and means it.",
+    "Wong manages the entire library of Kamar-Taj — he's the original sysadmin with 'read the docs' energy.",
+    "He became Sorcerer Supreme while Strange was dusted. The ultimate on-call escalation.",
+    "Wong once left a battle to attend a music event. Even sysadmins need work-life balance."
   ],
   "wolverine": [
     "Wolverine's healing factor once regenerated his entire body from a single cell. That's a recovery point objective of literally zero.",
@@ -212,7 +293,10 @@
     "Logan is over 130 years old. He's the legacy system that refuses to be deprecated — and somehow still outperforms the new stuff.",
     "He's been an Avenger, X-Man, and Alpha Flight member. The most battle-tested microservice in the Marvel universe.",
     "Wolverine once survived a nuclear blast at ground zero. Your system should survive at least a pod restart.",
-    "His claws are part of his skeleton — no external dependencies required. True zero-dependency architecture."
+    "His claws are part of his skeleton — no external dependencies required. True zero-dependency architecture.",
+    "Logan's adamantium skeleton was bonded to his bones without anesthesia. The most painful upgrade path in Marvel.",
+    "Wolverine has been alive since 1832 — the longest-running process with no restart.",
+    "His healing factor once regenerated him from a single cell. The ultimate backup and restore."
   ],
   "ghost_spider": [
     "Gwen traverses the multiverse with a dimension-hopping watch. The original cross-platform build tool.",
@@ -220,7 +304,10 @@
     "Ghost-Spider's suit was designed by Janet Van Dyne in her universe — proof that design system collaboration works.",
     "She balances being a hero across multiple dimensions. The ultimate multi-platform developer.",
     "Gwen's web-shooters work differently in each universe she visits — she's an expert at platform-specific adaptations.",
-    "Her Spider-Verse movie literally used different animation frame rates per character to show style differences. The ultimate design token system."
+    "Her Spider-Verse movie literally used different animation frame rates per character to show style differences. The ultimate design token system.",
+    "Gwen's universe has a band called The Mary Janes where she's the drummer. In her timeline, MJ is the bandmate, not the love interest.",
+    "Spider-Gwen's web shooters were designed by her universe's Janet Van Dyne. Cross-team open source collaboration.",
+    "She hops between dimensions using a watch. The original multi-environment deployment."
   ],
   "storm": [
     "Storm once defeated Cyclops for leadership of the X-Men — WITHOUT her powers. Pure architectural vision.",
@@ -228,7 +315,10 @@
     "Ororo was worshipped as a goddess in Kenya. Your cloud architect should inspire similar devotion.",
     "She married T'Challa (Black Panther). The most powerful cloud-infrastructure power couple in Marvel.",
     "Storm's claustrophobia comes from being trapped in rubble as a child. She understands why systems need escape hatches.",
-    "She once created a planet-wide rainstorm to end a drought. The ultimate auto-scaling event."
+    "She once created a planet-wide rainstorm to end a drought. The ultimate auto-scaling event.",
+    "Ororo can control weather patterns globally — she's running the world's most powerful distributed system.",
+    "Storm was worshipped as a goddess in Kenya before joining the X-Men. From production to the open source community.",
+    "She once defeated Cyclops in combat WITHOUT her powers to become X-Men leader. Won on architecture alone."
   ],
   "magneto": [
     "Magneto can manipulate electromagnetic fields at the atomic level. Your data transformation granularity should aspire to this.",
@@ -236,7 +326,10 @@
     "Magneto's helmet blocks telepathy — the original data encryption at rest.",
     "He once ripped the adamantium out of Wolverine's skeleton. The most aggressive schema migration in Marvel history.",
     "Erik survived the Holocaust, then built an island nation. From catastrophic data loss to a complete rebuild — the ultimate disaster recovery.",
-    "He can sense the Earth's magnetic field lines. That's real-time data lineage visualization."
+    "He can sense the Earth's magnetic field lines. That's real-time data lineage visualization.",
+    "Magneto once lifted an entire football stadium and moved it across a city. The largest data migration in mutant history.",
+    "Erik survived the Holocaust and dedicated his life to preventing mutant persecution. His error handling comes from lived experience.",
+    "He can manipulate individual iron atoms in someone's blood. The most precise low-level system access imaginable."
   ],
   "gambit": [
     "Gambit charges objects with kinetic energy — he literally turns potential into power. The ultimate risk-to-reward converter.",
@@ -244,7 +337,10 @@
     "Remy's signature move is throwing charged playing cards. Each one a calculated risk with explosive returns.",
     "He once stole from the Thieves Guild AND the Assassins Guild. The man A/B tested criminal organizations.",
     "Gambit can sense the potential energy in objects. He literally sees risk surfaces everywhere.",
-    "His real name, Remy LeBeau, means 'the beautiful' in French. Because good risk management IS beautiful, mon ami."
+    "His real name, Remy LeBeau, means 'the beautiful' in French. Because good risk management IS beautiful, mon ami.",
+    "Remy can charge any object with kinetic energy — even a playing card becomes an explosive. The original payload injection.",
+    "Gambit was once the leader of the Thieves Guild. The ultimate social engineering expert.",
+    "His signature move is charging playing cards — 52 possible payloads in a standard deck. The original enumeration attack."
   ],
   "nebula": [
     "Nebula was rebuilt by Thanos piece by piece, replacing organic parts with cybernetic ones. The original strangler fig pattern — applied to a person.",
@@ -252,7 +348,10 @@
     "Nebula and Gamora went from enemies to allies — proving that even the most hostile fork can be merged.",
     "Her cybernetic upgrades make her stronger than her original form. Sometimes the modernized system IS better.",
     "She rebuilt her relationship with her sister while rebuilding herself. Legacy modernization is emotional work too.",
-    "Nebula survived being turned into a living zombie by Thanos and came back stronger. Your legacy system can survive a rewrite."
+    "Nebula survived being turned into a living zombie by Thanos and came back stronger. Your legacy system can survive a rewrite.",
+    "Nebula was rebuilt piece by piece by Thanos every time she lost a fight. The most aggressive continuous integration.",
+    "She eventually turned against Thanos after years of abuse — the original fork from a toxic upstream.",
+    "In Endgame, past-Nebula and present-Nebula existed simultaneously. The most confusing merge conflict in the timeline."
   ],
   "daredevil": [
     "Matt Murdock lost his sight to radioactive chemicals as a child, but his other senses became superhuman. He experiences the web the way screen reader users do — and he's BETTER at it.",
@@ -260,7 +359,10 @@
     "He's a lawyer at Nelson & Murdock. He knows ADA compliance isn't just good practice — it's the LAW.",
     "Daredevil can hear a person's heartbeat from across a room. He notices the details everyone else misses — like missing alt text.",
     "His costume is red because he can't see colors anyway. The ultimate reminder that color should never be the only way to convey information.",
-    "Matt reads printed text by feeling the ink on the page. If your UI requires vision to function, Daredevil is already judging you."
+    "Matt reads printed text by feeling the ink on the page. If your UI requires vision to function, Daredevil is already judging you.",
+    "Matt Murdock's radar sense gives him a 360-degree awareness of his surroundings. The ultimate observability platform.",
+    "He's a lawyer by day and vigilante by night. The original dual-stack deployment.",
+    "Daredevil's heightened senses can detect lies through heartbeat changes. The human polygraph — built-in input validation."
   ],
   "professor_x": [
     "Cerebro amplifies Xavier's telepathy to find mutants worldwide. It's literally a feature detection model running on biological hardware with a hardware accelerator.",
@@ -268,7 +370,10 @@
     "Xavier can read every mind on Earth simultaneously with Cerebro. That's processing billions of unstructured data points in real-time.",
     "He chose peaceful coexistence over Magneto's approach. In ML terms, he optimizes for fairness constraints, not just accuracy.",
     "The X-Mansion's Danger Room adapts to each student's abilities. The original adaptive learning system with personalized training data.",
-    "Xavier once had his mind taken over by the Shadow King. A cautionary tale about adversarial attacks on your model."
+    "Xavier once had his mind taken over by the Shadow King. A cautionary tale about adversarial attacks on your model.",
+    "Cerebro amplifies Xavier's telepathy to reach every mutant on Earth. The most powerful broadcast channel ever built.",
+    "Charles has wiped and restored memories multiple times. The original database admin with too much production access.",
+    "He founded Xavier's School to train young mutants — the original coding bootcamp, but with mind powers."
   ],
   "heimdall": [
     "Heimdall can see and hear everything happening across all nine realms. The ultimate network monitoring solution — zero blind spots.",
@@ -276,7 +381,10 @@
     "He stood guard at the Bifrost for millennia without rest. That's 99.9999% uptime — and he's insulted you'd round down.",
     "Heimdall defied Odin's direct orders to save Asgardians from Hela. Even the best infra engineer knows when to override policy for the right reason.",
     "His eyes are orange because he sees with cosmic sight. Regular monitoring dashboards are just the mortal approximation.",
-    "In Infinity War, Heimdall used his last breath to Bifrost Hulk to Earth. Prioritizing critical traffic even during a catastrophic failure — that's incident response."
+    "In Infinity War, Heimdall used his last breath to Bifrost Hulk to Earth. Prioritizing critical traffic even during a catastrophic failure — that's incident response.",
+    "Heimdall can see and hear everything across all Nine Realms simultaneously. He IS the monitoring stack.",
+    "He guards the Bifrost and controls who enters Asgard — the original API gateway with authentication.",
+    "Heimdall once sent Hulk to Earth via the Bifrost with his last breath. The ultimate final failover."
   ],
   "peter_w": [
     "Peter responded to an ad in the newspaper to join X-Force. He found his team the same way most people find their first dev job — a random listing and blind optimism.",
@@ -284,13 +392,19 @@
     "Peter survived the X-Force parachute disaster in the extended cut. The intern who outlives the production incident.",
     "Rob Delaney played Peter in Deadpool 2. He brought more heart to that role than most heroes bring to entire franchises.",
     "Peter packed sugar for the X-Force mission. He came prepared with snacks, not weapons. This man has his priorities RIGHT.",
-    "Deadpool specifically chose Peter for X-Force because of his enthusiasm. Sometimes 'will to learn' beats 'years of experience.'"
+    "Deadpool specifically chose Peter for X-Force because of his enthusiasm. Sometimes 'will to learn' beats 'years of experience.'",
+    "Peter W. joined the X-Force with no superpowers and jumped out of a helicopter anyway. The most confident junior dev deployment.",
+    "His only skill listed on his application was 'enthusiasm.' The original hire for culture fit.",
+    "Peter W. survived Deadpool 2 (barely). His uptime is questionable but his spirit is unbreakable."
   ],
   "the_watcher": [
     "Uatu has watched over Earth from his home on the Blue Area of the Moon for millennia. The original remote worker.",
     "The Watcher's oath of non-interference has been broken more times than most production SLAs.",
     "There are countless Watchers across the universe, each assigned to observe a different sector of space. The original distributed monitoring system.",
     "In 'What If...?' Uatu narrates alternate realities — essentially running 'git diff' across the entire multiverse.",
-    "The Watchers were created by the First Firmament — making Uatu the universe's first observability platform."
+    "The Watchers were created by the First Firmament — making Uatu the universe's first observability platform.",
+    "Uatu has observed every major event in Marvel history but is sworn never to interfere. The original read-only user.",
+    "He broke his oath of non-interference multiple times because he cared too much. Even observers have a breaking point.",
+    "The Watcher's home is on the Blue Area of the Moon — the most remote monitoring station in the solar system."
   ]
 }
