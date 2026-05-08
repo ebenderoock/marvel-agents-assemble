@@ -9,7 +9,7 @@ REPO="ebenderoock/marvel-agents-assemble"
 BRANCH="main"
 BASE_URL="https://raw.githubusercontent.com/${REPO}/${BRANCH}"
 EXT_DIR="${HOME}/.copilot/extensions/marvel-agents"
-FILES=("extension.mjs" "characters.json")
+FILES=("extension.mjs" "characters.json" "trivia.json")
 SRC_DIR=".github/extensions/marvel-agents"
 
 red()   { printf "\033[31m%s\033[0m\n" "$*"; }

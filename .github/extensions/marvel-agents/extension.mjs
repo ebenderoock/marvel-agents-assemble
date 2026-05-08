@@ -166,7 +166,39 @@ function getRandomNews(count = 2) {
 // Kick off initial fetch (non-blocking)
 fetchMarvelNews();
 
-// ---- Roster & Trivia Helpers ----
+// ---- Dynamic Trivia Feed ----
+
+const TRIVIA_REPO = process.env.MARVEL_TRIVIA_REPO || "ebenderoock/marvel-agents-assemble";
+const TRIVIA_BRANCH = process.env.MARVEL_TRIVIA_BRANCH || "main";
+const TRIVIA_URL = `https://raw.githubusercontent.com/${TRIVIA_REPO}/${TRIVIA_BRANCH}/.github/extensions/marvel-agents/trivia.json`;
+const TRIVIA_CACHE_TTL = 6 * 60 * 60 * 1000; // 6 hours
+let triviaCache = { data: null, fetchedAt: 0 };
+
+async function fetchTrivia() {
+  if (Date.now() - triviaCache.fetchedAt < TRIVIA_CACHE_TTL && triviaCache.data) {
+    return triviaCache.data;
+  }
+
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 5000);
+    const res = await fetch(TRIVIA_URL, { signal: controller.signal });
+    clearTimeout(timeout);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    if (data && typeof data === "object") {
+      triviaCache = { data, fetchedAt: Date.now() };
+      console.debug(`[Marvel Trivia] Refreshed from ${TRIVIA_URL}`);
+    }
+    return triviaCache.data;
+  } catch (err) {
+    console.debug(`[Marvel Trivia] Fetch failed, using fallback: ${err?.message || err}`);
+    return null; // caller falls back to static trivia
+  }
+}
+
+// Kick off initial trivia fetch (non-blocking)
+fetchTrivia();
 
 // ---- Orchestration Workflows ----
 
@@ -401,10 +433,13 @@ function buildRosterText() {
   return lines.join("\n");
 }
 
-function getRandomTrivia(char) {
-  if (!char.trivia || char.trivia.length === 0) return "";
-  const idx = Math.floor(Math.random() * char.trivia.length);
-  return `\n\n📖 **Trivia:** ${char.trivia[idx]}`;
+function getRandomTrivia(char, charKey) {
+  // Prefer dynamically fetched trivia, fall back to static
+  const dynamicTrivia = triviaCache.data?.[charKey];
+  const pool = (dynamicTrivia && dynamicTrivia.length > 0) ? dynamicTrivia : char.trivia;
+  if (!pool || pool.length === 0) return "";
+  const idx = Math.floor(Math.random() * pool.length);
+  return `\n\n📖 **Trivia:** ${pool[idx]}`;
 }
 
 // ---- Core Tools ----
@@ -444,7 +479,7 @@ Specialty: ${char.specialty}
 
 All responses will now channel ${char.name}'s personality and expertise. Their dedicated tool \`${char.toolName}\` is available for focused analysis.
 
-Use \`marvel_dismiss\` to return to normal mode.${getRandomTrivia(char)}${args.character === "deadpool" ? getRandomNews(1) : ""}`;
+Use \`marvel_dismiss\` to return to normal mode.${getRandomTrivia(char, args.character)}${args.character === "deadpool" ? getRandomNews(1) : ""}`;
     },
   },
   {
@@ -584,7 +619,7 @@ Commit: \`${hash}\`
 Message: ${args.message}
 Signed-off-by: ${char.alias} <${email}>
 
-${getRandomTrivia(char)}`;
+${getRandomTrivia(char, activeKey)}`;
       } catch (err) {
         return {
           textResultForLlm: `Git commit failed: ${err.message}\n\nMake sure you're in a git repository with staged changes.`,
