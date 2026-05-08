@@ -4,7 +4,7 @@ Summon Marvel characters as coding personas in your [GitHub Copilot CLI](https:/
 
 ## Features
 
-- **37 characters** — Each with a unique personality, specialty tool, and analysis framework
+- **38 characters** — Each with a unique personality, specialty tool, and analysis framework
 - **Summon & dismiss** — Channel a character and all responses adopt their voice
 - **Character tools** — Focused analysis tools (e.g., `marvel_ironman_architect`, `marvel_black_widow_security`)
 - **Assemble** — Multi-agent parallel reviews with preset workflows: `code_review`, `security_sweep`, `deploy_check`, `refactor_plan`, `full_avengers`
