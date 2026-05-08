@@ -428,7 +428,7 @@ function buildRosterText() {
   for (const [key, char] of Object.entries(CHARACTERS)) {
     lines.push(`${char.emoji} **${char.name}** (${char.alias}) — ${char.specialty}`);
     lines.push(`   ${char.description}`);
-    lines.push(`   Summon: \`marvel_summon\` with character "${key}"\n`);
+    lines.push(`   Summon: \`summon\` with character "${key}"\n`);
   }
   return lines.join("\n");
 }
@@ -448,9 +448,9 @@ const characterKeys = Object.keys(CHARACTERS);
 
 const coreTools = [
   {
-    name: "marvel_summon",
+    name: "summon",
     description:
-      "Summon a Marvel character to channel their personality and expertise. The active character's persona will influence all responses. Use marvel_roster to see available characters.",
+      "Summon a Marvel character to channel their personality and expertise. The active character's persona will influence all responses. Use roster to see available characters.",
     parameters: {
       type: "object",
       properties: {
@@ -479,11 +479,11 @@ Specialty: ${char.specialty}
 
 All responses will now channel ${char.name}'s personality and expertise. Their dedicated tool \`${char.toolName}\` is available for focused analysis.
 
-Use \`marvel_dismiss\` to return to normal mode.${getRandomTrivia(char, args.character)}${args.character === "deadpool" ? getRandomNews(1) : ""}`;
+Use \`dismiss\` to return to normal mode.${getRandomTrivia(char, args.character)}${args.character === "deadpool" ? getRandomNews(1) : ""}`;
     },
   },
   {
-    name: "marvel_roster",
+    name: "roster",
     description:
       "Display all available Marvel character agents, their specialties, and how to summon them.",
     parameters: { type: "object", properties: {} },
@@ -495,13 +495,13 @@ Use \`marvel_dismiss\` to return to normal mode.${getRandomTrivia(char, args.cha
         const char = CHARACTERS[activeKey];
         status = `\n\n**Currently Active:** ${char.emoji} ${char.name}`;
       } else {
-        status = "\n\n**No character currently active.** Use `marvel_summon` to channel one!";
+        status = "\n\n**No character currently active.** Use `summon` to channel one!";
       }
       return buildRosterText() + status;
     },
   },
   {
-    name: "marvel_dismiss",
+    name: "dismiss",
     description: "Dismiss the currently active Marvel character and return to normal mode.",
     parameters: { type: "object", properties: {} },
     handler: async (_args, invocation) => {
@@ -515,11 +515,11 @@ Use \`marvel_dismiss\` to return to normal mode.${getRandomTrivia(char, args.cha
       return `${char.emoji} **${char.name}** has been dismissed.
 "${char.dismissQuote || "Until next time."}"
 
-Use \`marvel_summon\` to call another character.`;
+Use \`summon\` to call another character.`;
     },
   },
   {
-    name: "marvel_commit",
+    name: "commit",
     description:
       "Create a git commit authored by the currently active Marvel character, with the real user as co-author. Requires a summoned character.",
     parameters: {
@@ -544,7 +544,7 @@ Use \`marvel_summon\` to call another character.`;
       const activeKey = getActiveCharacter(invocation.sessionId);
       if (!activeKey) {
         return {
-          textResultForLlm: "No character is currently active! Summon a character first with `marvel_summon`, then commit as them.",
+          textResultForLlm: "No character is currently active! Summon a character first with `summon`, then commit as them.",
           resultType: "failure",
         };
       }
@@ -630,7 +630,7 @@ ${getRandomTrivia(char, activeKey)}`;
   },
   // ---- Orchestration Tools ----
   {
-    name: "marvel_assemble",
+    name: "assemble",
     description:
       "Launch a multi-agent battlefield review. Multiple Marvel agents analyze the same target in parallel, then The Watcher synthesizes their findings. Presets: code_review, security_sweep, deploy_check, refactor_plan, full_avengers. Or pass custom character keys.",
     parameters: {
@@ -690,7 +690,7 @@ ${getRandomTrivia(char, activeKey)}`;
     },
   },
   {
-    name: "marvel_battle",
+    name: "battle",
     description:
       "Launch a battle between two Marvel agents. They analyze the same target, then cross-examine each other's findings. The Watcher delivers the verdict.",
     parameters: {
@@ -739,13 +739,13 @@ ${getRandomTrivia(char, activeKey)}`;
 // ---- Status Tool (lightweight check) ----
 
 const statusTool = {
-  name: "marvel_status",
+  name: "status",
   description: "Quick check: which Marvel character is currently active, without showing the full roster.",
   parameters: { type: "object", properties: {} },
   handler: async (_args, invocation) => {
     const activeKey = getActiveCharacter(invocation.sessionId);
     if (!activeKey) {
-      return "No character currently active. Use `marvel_summon` to channel one!";
+      return "No character currently active. Use `summon` to channel one!";
     }
     const char = CHARACTERS[activeKey];
     return `${char.emoji} **${char.name}** (${char.alias}) is active.\nSpecialty: ${char.specialty}\nTool: \`${char.toolName}\``;
@@ -783,13 +783,22 @@ const characterTools = Object.entries(CHARACTERS).map(([key, char]) => ({
   },
 }));
 
+// ---- Backward-Compatible Aliases (marvel_* → *) ----
+// Users with muscle memory or existing scripts can still use the old names
+const allPrimaryTools = [...coreTools, statusTool, ...characterTools];
+const aliasTools = allPrimaryTools.map(tool => ({
+  ...tool,
+  name: `marvel_${tool.name}`,
+  description: `[Alias for ${tool.name}] ${tool.description}`,
+}));
+
 // ---- Initialize Extension ----
 
 const session = await joinSession({
-  tools: [...coreTools, statusTool, ...characterTools],
+  tools: [...allPrimaryTools, ...aliasTools],
   hooks: {
     onSessionStart: async () => {
-      await session.log("🦸 Marvel Agents extension loaded — use marvel_summon to channel a hero!");
+      await session.log("🦸 Marvel Agents extension loaded — use summon to channel a hero!");
     },
     onUserPromptSubmitted: async (input, invocation) => {
       const activeKey = getActiveCharacter(invocation.sessionId);

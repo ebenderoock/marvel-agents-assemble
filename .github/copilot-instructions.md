@@ -9,8 +9,8 @@ This is a **GitHub Copilot CLI extension** called "Marvel Agents" that lets user
 The extension lives entirely in `.github/extensions/marvel-agents/` and consists of two files:
 
 - **`extension.mjs`** — The extension entry point. Registers tools and hooks via `joinSession()` from the Copilot SDK. Contains:
-  - **Core tools**: `marvel_summon`, `marvel_dismiss`, `marvel_roster`, `marvel_commit`, `marvel_status`, `marvel_assemble`, `marvel_battle`
-  - **Character-specific tools**: Dynamically generated from `characters.json` (one analysis tool per character, e.g., `marvel_ironman_architect`)
+  - **Core tools**: `summon`, `dismiss`, `roster`, `commit`, `status`, `assemble`, `battle`
+  - **Character-specific tools**: Dynamically generated from `characters.json` (one analysis tool per character, e.g., `ironman_architect`)
   - **Profanity sanitization**: A `PROFANITY_MAP` dictionary that sanitizes commit messages via exact word-boundary matching. The detection set (`PROFANITY_WORDS`) is derived from the map keys — add new entries to `PROFANITY_MAP` only.
   - **Session-scoped state**: `activeCharacters` Map keyed by `sessionId`, capped at 100 entries with LRU eviction
   - **News feed**: Fetches Marvel RSS headlines with 30-min TTL cache (Deadpool-exclusive feature)
@@ -23,8 +23,8 @@ The extension lives entirely in `.github/extensions/marvel-agents/` and consists
 
 - **No build step** — The extension is raw ESM (`extension.mjs`) loaded directly by the Copilot CLI runtime. No transpilation or bundling.
 - **Tool registration pattern** — Tools are plain objects with `name`, `description`, `parameters` (JSON Schema), and an async `handler(args, invocation)` function. All tools are passed to `joinSession({ tools: [...] })`.
-- **Commit message sanitization** — `marvel_commit` writes messages to a temp file (`git commit -F`) to avoid shell injection. Messages are sanitized through `PROFANITY_MAP` before commit. The Copilot co-author trailer is appended automatically.
-- **Security**: `marvel_commit` validates `cwd` is an absolute path, exists, is a directory, and contains `.git` before any `execSync` call. Git operations have a 10-second timeout.
+- **Commit message sanitization** — `commit` writes messages to a temp file (`git commit -F`) to avoid shell injection. Messages are sanitized through `PROFANITY_MAP` before commit. The Copilot co-author trailer is appended automatically.
+- **Security**: `commit` validates `cwd` is an absolute path, exists, is a directory, and contains `.git` before any `execSync` call. Git operations have a 10-second timeout.
 - **Content rating system** — Deadpool and Wolverine get R-rated mode (uncensored); Captain America reacts to user profanity with "Language!"; all others are PG-13.
 
 ## MCP Configuration
