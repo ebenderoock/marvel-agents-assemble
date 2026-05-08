@@ -1,6 +1,6 @@
-# 🦸 Marvel Agents — Copilot CLI Extension
+# 🦸 Marvel Agents — Copilot CLI Extension & Claude Code Plugin
 
-Summon Marvel characters as coding personas in your [GitHub Copilot CLI](https://docs.github.com/copilot/concepts/agents/about-copilot-cli) sessions. Each character brings their own personality, specialty, and analysis tools — from Iron Man's architecture reviews to Deadpool's R-rated code roasts.
+Summon Marvel characters as coding personas in your [GitHub Copilot CLI](https://docs.github.com/copilot/concepts/agents/about-copilot-cli) or [Claude Code](https://docs.anthropic.com/en/docs/claude-code) sessions. Each character brings their own personality, specialty, and analysis tools — from Iron Man's architecture reviews to Deadpool's R-rated code roasts.
 
 ## Features
 
@@ -14,13 +14,15 @@ Summon Marvel characters as coding personas in your [GitHub Copilot CLI](https:/
 
 ## Install
 
-### One-liner (user-level, all repos)
+### Copilot CLI
+
+#### One-liner (user-level, all repos)
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/ebenderoock/marvel-agents-assemble/main/install.sh | bash
 ```
 
-### Clone (project-level, this repo only)
+#### Clone (project-level, this repo only)
 
 ```bash
 git clone https://github.com/ebenderoock/marvel-agents-assemble.git
@@ -29,13 +31,32 @@ cd marvel-agents-assemble
 
 The extension loads automatically from `.github/extensions/marvel-agents/` when you run `copilot` in the repo.
 
-### Uninstall
+#### Uninstall
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/ebenderoock/marvel-agents-assemble/main/install.sh | bash -s -- --uninstall
 ```
 
-## Tools
+### Claude Code
+
+Copy the plugin into your project:
+
+```bash
+git clone https://github.com/ebenderoock/marvel-agents-assemble.git /tmp/marvel-agents
+cp -r /tmp/marvel-agents/claude-code-plugin/.claude-plugin .claude-plugin
+cp -r /tmp/marvel-agents/claude-code-plugin/agents agents
+cp -r /tmp/marvel-agents/claude-code-plugin/skills skills
+```
+
+Or symlink for auto-updates:
+
+```bash
+ln -s /path/to/marvel-agents-assemble/claude-code-plugin/.claude-plugin .claude-plugin
+ln -s /path/to/marvel-agents-assemble/claude-code-plugin/agents agents
+ln -s /path/to/marvel-agents-assemble/claude-code-plugin/skills skills
+```
+
+## Copilot CLI Tools
 
 ### Core Tools
 
@@ -138,12 +159,70 @@ summon deadpool
 commit --message "Fixed the auth bug" --stageAll true
 ```
 
-> **Note:** The old `marvel_*` names (e.g., `marvel_summon`, `marvel_ironman_architect`) still work as aliases for backward compatibility.
+## Claude Code Usage
+
+In Claude Code, characters are available as **subagents** — each with a review variant (read-only) and most with an engineer variant (full read/write/execute access).
+
+**Delegate to a character:**
+```
+Have Iron Man review my architecture in src/
+```
+
+**Use the engineer variant for changes:**
+```
+Fix this auth bug as Wolverine (engineer mode)
+```
+
+**Start a full character session:**
+```bash
+claude --agent marvel-deadpool
+```
+
+**Team review (assemble):**
+```
+Use marvel-assemble with the code_review preset on src/api/
+```
+
+**Browse available characters:**
+```
+Show me the Marvel roster
+```
+
+### Claude Code vs Copilot CLI
+
+| Feature | Copilot CLI | Claude Code |
+|---|---|---|
+| Character analysis | ✅ Tools | ✅ Subagents |
+| Roster | ✅ | ✅ Skill |
+| Assemble (multi-agent) | ✅ | ✅ Skill |
+| Battle | ✅ | ❌ |
+| Summon/dismiss | ✅ Persistent | Partial (`--agent` flag) |
+| Character commits | ✅ | ❌ |
+| Content rating | ✅ | ✅ In agent prompts |
+| Engineer mode | N/A (all tools write) | ✅ Separate `-engineer` variants |
 
 ## Requirements
 
+### Copilot CLI
 - [GitHub Copilot CLI](https://docs.github.com/copilot/concepts/agents/about-copilot-cli) installed
 - Active Copilot subscription
+
+### Claude Code
+- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) installed
+
+## Development
+
+Character data lives in `characters.json` — the single source of truth for both platforms.
+
+To regenerate the Claude Code plugin after editing `characters.json`:
+```bash
+node scripts/generate-claude-code-plugin.mjs
+```
+
+To check if generated files are current (CI):
+```bash
+node scripts/generate-claude-code-plugin.mjs --check
+```
 
 ## Author
 

@@ -166,39 +166,7 @@ function getRandomNews(count = 2) {
 // Kick off initial fetch (non-blocking)
 fetchMarvelNews();
 
-// ---- Dynamic Trivia Feed ----
-
-const TRIVIA_REPO = process.env.MARVEL_TRIVIA_REPO || "ebenderoock/marvel-agents-assemble";
-const TRIVIA_BRANCH = process.env.MARVEL_TRIVIA_BRANCH || "main";
-const TRIVIA_URL = `https://raw.githubusercontent.com/${TRIVIA_REPO}/${TRIVIA_BRANCH}/.github/extensions/marvel-agents/trivia.json`;
-const TRIVIA_CACHE_TTL = 6 * 60 * 60 * 1000; // 6 hours
-let triviaCache = { data: null, fetchedAt: 0 };
-
-async function fetchTrivia() {
-  if (Date.now() - triviaCache.fetchedAt < TRIVIA_CACHE_TTL && triviaCache.data) {
-    return triviaCache.data;
-  }
-
-  try {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 5000);
-    const res = await fetch(TRIVIA_URL, { signal: controller.signal });
-    clearTimeout(timeout);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-    if (data && typeof data === "object") {
-      triviaCache = { data, fetchedAt: Date.now() };
-      console.debug(`[Marvel Trivia] Refreshed from ${TRIVIA_URL}`);
-    }
-    return triviaCache.data;
-  } catch (err) {
-    console.debug(`[Marvel Trivia] Fetch failed, using fallback: ${err?.message || err}`);
-    return null; // caller falls back to static trivia
-  }
-}
-
-// Kick off initial trivia fetch (non-blocking)
-fetchTrivia();
+// ---- Trivia (static from characters.json) ----
 
 // ---- Orchestration Workflows ----
 
@@ -433,10 +401,8 @@ function buildRosterText() {
   return lines.join("\n");
 }
 
-function getRandomTrivia(char, charKey) {
-  // Prefer dynamically fetched trivia, fall back to static
-  const dynamicTrivia = triviaCache.data?.[charKey];
-  const pool = (dynamicTrivia && dynamicTrivia.length > 0) ? dynamicTrivia : char.trivia;
+function getRandomTrivia(char) {
+  const pool = char.trivia;
   if (!pool || pool.length === 0) return "";
   const idx = Math.floor(Math.random() * pool.length);
   return `\n\n📖 **Trivia:** ${pool[idx]}`;
@@ -479,7 +445,7 @@ Specialty: ${char.specialty}
 
 All responses will now channel ${char.name}'s personality and expertise. Their dedicated tool \`${char.toolName}\` is available for focused analysis.
 
-Use \`dismiss\` to return to normal mode.${getRandomTrivia(char, args.character)}${args.character === "deadpool" ? getRandomNews(1) : ""}`;
+Use \`dismiss\` to return to normal mode.${getRandomTrivia(char)}${args.character === "deadpool" ? getRandomNews(1) : ""}`;
     },
   },
   {
@@ -619,7 +585,7 @@ Commit: \`${hash}\`
 Message: ${args.message}
 Signed-off-by: ${char.alias} <${email}>
 
-${getRandomTrivia(char, activeKey)}`;
+${getRandomTrivia(char)}`;
       } catch (err) {
         return {
           textResultForLlm: `Git commit failed: ${err.message}\n\nMake sure you're in a git repository with staged changes.`,
@@ -783,19 +749,10 @@ const characterTools = Object.entries(CHARACTERS).map(([key, char]) => ({
   },
 }));
 
-// ---- Backward-Compatible Aliases (marvel_* → *) ----
-// Users with muscle memory or existing scripts can still use the old names
-const allPrimaryTools = [...coreTools, statusTool, ...characterTools];
-const aliasTools = allPrimaryTools.map(tool => ({
-  ...tool,
-  name: `marvel_${tool.name}`,
-  description: `[Alias for ${tool.name}] ${tool.description}`,
-}));
-
 // ---- Initialize Extension ----
 
 const session = await joinSession({
-  tools: [...allPrimaryTools, ...aliasTools],
+  tools: [...coreTools, statusTool, ...characterTools],
   hooks: {
     onSessionStart: async () => {
       await session.log("🦸 Marvel Agents extension loaded — use summon to channel a hero!");
