@@ -142,3 +142,7 @@ marvel_commit --message "Fixed the auth bug" --stageAll true
 
 - [GitHub Copilot CLI](https://docs.github.com/copilot/concepts/agents/about-copilot-cli) installed
 - Active Copilot subscription
+
+## Author
+
+Created by [Eben de Roock](https://github.com/ebenderoock)
