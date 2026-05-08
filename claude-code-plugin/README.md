@@ -60,11 +60,11 @@ See the `marvel-roster` skill for the complete list and recommended team composi
 All agent and skill files are auto-generated from `characters.json`. To regenerate:
 
 ```bash
-node scripts/generate-claude-code-plugin.mjs
+node scripts/generate-plugins.mjs --target claude
 ```
 
 To check if files are up-to-date (CI):
 
 ```bash
-node scripts/generate-claude-code-plugin.mjs --check
+node scripts/generate-plugins.mjs --target claude --check
 ```

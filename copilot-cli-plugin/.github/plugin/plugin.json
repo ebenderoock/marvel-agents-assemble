@@ -1,0 +1,14 @@
+{
+  "name": "marvel-agents",
+  "description": "Summon Marvel characters as coding specialists in Copilot CLI. 38 characters, each with unique personality, specialty, and analysis framework.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Eben de Roock"
+  },
+  "agents": [
+    "./agents"
+  ],
+  "skills": [
+    "./skills"
+  ]
+}

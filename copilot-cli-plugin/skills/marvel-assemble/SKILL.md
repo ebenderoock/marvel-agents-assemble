@@ -6,7 +6,7 @@ description: "Launch a multi-agent Marvel review. Multiple character agents anal
 
 # ⚔️ Marvel Assemble — Multi-Agent Review
 
-When this skill is invoked, orchestrate a parallel review using Marvel character subagents.
+When this skill is invoked, orchestrate a parallel review using Marvel character custom agents.
 
 ## How to Execute
 

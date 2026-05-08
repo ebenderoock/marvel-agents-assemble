@@ -1,6 +1,6 @@
-# 🦸 Marvel Agents — Copilot CLI Extension & Claude Code Plugin
+# 🦸 Marvel Agents — Multi-Platform
 
-Summon Marvel characters as coding personas in your [GitHub Copilot CLI](https://docs.github.com/copilot/concepts/agents/about-copilot-cli) or [Claude Code](https://docs.anthropic.com/en/docs/claude-code) sessions. Each character brings their own personality, specialty, and analysis tools — from Iron Man's architecture reviews to Deadpool's R-rated code roasts.
+Summon Marvel characters as coding personas in [GitHub Copilot CLI](https://docs.github.com/copilot/concepts/agents/about-copilot-cli) or [Claude Code](https://docs.anthropic.com/en/docs/claude-code). Ships as three distribution formats: **Copilot CLI extension** (tool-based), **Copilot CLI plugin** (custom agents), and **Claude Code plugin** (subagents). Each character brings their own personality, specialty, and analysis framework — from Iron Man's architecture reviews to Deadpool's R-rated code roasts.
 
 ## Features
 
@@ -14,7 +14,7 @@ Summon Marvel characters as coding personas in your [GitHub Copilot CLI](https:/
 
 ## Install
 
-### Copilot CLI
+### Copilot CLI Extension
 
 #### One-liner (user-level, all repos)
 
@@ -35,6 +35,23 @@ The extension loads automatically from `.github/extensions/marvel-agents/` when 
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/ebenderoock/marvel-agents-assemble/main/install.sh | bash -s -- --uninstall
+```
+
+### Copilot CLI Plugin
+
+Install as a Copilot CLI plugin for custom agent support (review/engineer variants):
+
+```bash
+git clone https://github.com/ebenderoock/marvel-agents-assemble.git /tmp/marvel-agents
+copilot plugin install /tmp/marvel-agents/copilot-cli-plugin
+```
+
+Or copy into your project:
+
+```bash
+cp -r /tmp/marvel-agents/copilot-cli-plugin/.github/plugin .github/plugin
+cp -r /tmp/marvel-agents/copilot-cli-plugin/agents agents
+cp -r /tmp/marvel-agents/copilot-cli-plugin/skills skills
 ```
 
 ### Claude Code
@@ -201,9 +218,11 @@ Show me the Marvel roster
 | Content rating | ✅ | ✅ In agent prompts |
 | Engineer mode | N/A (all tools write) | ✅ Separate `-engineer` variants |
 
+> The **Copilot CLI plugin** format supports the same agent/skill features as Claude Code (review + engineer variants, roster, assemble). Install via `copilot plugin install ./copilot-cli-plugin`.
+
 ## Requirements
 
-### Copilot CLI
+### Copilot CLI (Extension or Plugin)
 - [GitHub Copilot CLI](https://docs.github.com/copilot/concepts/agents/about-copilot-cli) installed
 - Active Copilot subscription
 
@@ -212,16 +231,22 @@ Show me the Marvel roster
 
 ## Development
 
-Character data lives in `characters.json` — the single source of truth for both platforms.
+Character data lives in `characters.json` — the single source of truth for all three platforms.
 
-To regenerate the Claude Code plugin after editing `characters.json`:
+To regenerate both plugin formats after editing `characters.json`:
 ```bash
-node scripts/generate-claude-code-plugin.mjs
+node scripts/generate-plugins.mjs
+```
+
+To generate for a specific platform:
+```bash
+node scripts/generate-plugins.mjs --target claude
+node scripts/generate-plugins.mjs --target copilot
 ```
 
 To check if generated files are current (CI):
 ```bash
-node scripts/generate-claude-code-plugin.mjs --check
+node scripts/generate-plugins.mjs --check
 ```
 
 ## Author

@@ -1,17 +1,20 @@
 #!/usr/bin/env node
 
 /**
- * generate-claude-code-plugin.mjs
+ * generate-plugins.mjs
  *
- * Reads characters.json (single source of truth) and generates:
- *   - claude-code-plugin/.claude-plugin/plugin.json
- *   - claude-code-plugin/agents/marvel-{key}.md          (read-only, 38 total)
- *   - claude-code-plugin/agents/marvel-{key}-engineer.md  (full access, ~32)
- *   - claude-code-plugin/skills/marvel-roster/SKILL.md
- *   - claude-code-plugin/skills/marvel-assemble/SKILL.md
+ * Reads characters.json (single source of truth) and generates plugin files
+ * for both Claude Code and Copilot CLI platforms.
  *
- * Usage:  node scripts/generate-claude-code-plugin.mjs [--check]
- *   --check   exits non-zero if generated files would differ (CI mode)
+ * Usage:
+ *   node scripts/generate-plugins.mjs [--target claude|copilot|both] [--check]
+ *
+ *   --target   Which platform(s) to generate (default: both)
+ *   --check    Exits non-zero if generated files would differ (CI mode)
+ *
+ * Output directories:
+ *   claude-code-plugin/   — Claude Code subagents & skills
+ *   copilot-cli-plugin/   — Copilot CLI custom agents & skills
  */
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync } from "node:fs";
@@ -21,9 +24,16 @@ import { fileURLToPath } from "node:url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
 const CHARACTERS_PATH = join(ROOT, ".github/extensions/marvel-agents/characters.json");
-const OUT = join(ROOT, "claude-code-plugin");
 
 const CHECK_MODE = process.argv.includes("--check");
+
+// Parse --target flag (default: both)
+const targetIdx = process.argv.indexOf("--target");
+const TARGET = targetIdx !== -1 ? process.argv[targetIdx + 1] : "both";
+if (!["claude", "copilot", "both"].includes(TARGET)) {
+  console.error(`Invalid --target: ${TARGET}. Use claude, copilot, or both.`);
+  process.exit(1);
+}
 const GENERATED_BANNER = "<!-- AUTO-GENERATED from characters.json — DO NOT EDIT -->";
 
 // Characters that are pure critique/meta and should NOT get an engineer variant
@@ -36,9 +46,61 @@ const NO_ENGINEER = new Set([
   "mantis",      // empathy/UX review, doesn't code
 ]);
 
-// Tool sets
-const READ_ONLY_TOOLS = "Read, Glob, Grep, LS";
-const ENGINEER_TOOLS = "Read, Glob, Grep, LS, Write, Edit, Bash, MultiEdit";
+// ── Platform configuration ───────────────────────────────────
+
+const PLATFORMS = {
+  claude: {
+    outDir: join(ROOT, "claude-code-plugin"),
+    label: "Claude Code",
+    readOnlyTools: "Read, Glob, Grep, LS",
+    engineerTools: "Read, Glob, Grep, LS, Write, Edit, Bash, MultiEdit",
+    manifestPath: ".claude-plugin/plugin.json",
+    buildManifest: () => ({
+      name: "Marvel Agents",
+      description: "Summon Marvel characters as coding specialists in Claude Code. 38 characters, each with unique personality, specialty, and analysis framework.",
+      version: "1.0.0",
+      author: "Eben de Roock",
+    }),
+    buildFrontmatter: (name, description, tools) => [
+      "---",
+      `name: ${name}`,
+      `description: ${yamlStr(description)}`,
+      `model: inherit`,
+      `tools: ${tools}`,
+      "---",
+    ].join("\n"),
+    agentCmd: (slug) => `claude --agent marvel-${slug}`,
+    platformName: "Claude Code",
+    subagentTerm: "subagents",
+    delegateVerb: "Claude delegates to",
+  },
+  copilot: {
+    outDir: join(ROOT, "copilot-cli-plugin"),
+    label: "Copilot CLI",
+    readOnlyTools: '["read", "search"]',
+    engineerTools: '["read", "search", "edit", "execute"]',
+    manifestPath: ".github/plugin/plugin.json",
+    buildManifest: () => ({
+      name: "marvel-agents",
+      description: "Summon Marvel characters as coding specialists in Copilot CLI. 38 characters, each with unique personality, specialty, and analysis framework.",
+      version: "1.0.0",
+      author: { name: "Eben de Roock" },
+      agents: ["./agents"],
+      skills: ["./skills"],
+    }),
+    buildFrontmatter: (name, description, tools) => [
+      "---",
+      `name: ${name}`,
+      `description: ${yamlStr(description)}`,
+      `tools: ${tools}`,
+      "---",
+    ].join("\n"),
+    agentCmd: (slug) => `copilot agent marvel-${slug}`,
+    platformName: "Copilot CLI",
+    subagentTerm: "custom agents",
+    delegateVerb: "Copilot delegates to",
+  },
+};
 
 // ── Load characters ──────────────────────────────────────────
 
@@ -56,11 +118,11 @@ function yamlStr(s) {
   return s;
 }
 
-let filesWritten = 0;
+let totalFilesWritten = 0;
 let checkFailed = false;
 
-function writeOutput(relPath, content) {
-  const absPath = join(OUT, relPath);
+function writeOutput(outDir, relPath, content) {
+  const absPath = join(outDir, relPath);
   mkdirSync(dirname(absPath), { recursive: true });
 
   if (CHECK_MODE) {
@@ -72,27 +134,24 @@ function writeOutput(relPath, content) {
   }
 
   writeFileSync(absPath, content, "utf-8");
-  filesWritten++;
+  totalFilesWritten++;
 }
 
 // ── Generate plugin.json ─────────────────────────────────────
 
-const pluginManifest = {
-  name: "Marvel Agents",
-  description: "Summon Marvel characters as coding specialists in Claude Code. 38 characters, each with unique personality, specialty, and analysis framework.",
-  version: "1.0.0",
-  author: "Eben de Roock",
-};
-
-writeOutput(".claude-plugin/plugin.json", JSON.stringify(pluginManifest, null, 2) + "\n");
+function generateManifest(platform) {
+  const cfg = PLATFORMS[platform];
+  writeOutput(cfg.outDir, cfg.manifestPath, JSON.stringify(cfg.buildManifest(), null, 2) + "\n");
+}
 
 // ── Generate agent files ─────────────────────────────────────
 
-function buildAgentMarkdown(key, char, isEngineer) {
+function buildAgentMarkdown(key, char, isEngineer, platform) {
+  const cfg = PLATFORMS[platform];
   const slug = key.replace(/_/g, "-");
   const suffix = isEngineer ? "-engineer" : "";
   const name = `marvel-${slug}${suffix}`;
-  const tools = isEngineer ? ENGINEER_TOOLS : READ_ONLY_TOOLS;
+  const tools = isEngineer ? cfg.engineerTools : cfg.readOnlyTools;
 
   const modeLabel = isEngineer ? "engineering" : "review";
   const modeNote = isEngineer
@@ -142,38 +201,38 @@ ${char.responseInstruction}
 ${char.trivia.map(t => `- ${t}`).join("\n")}
 `;
 
-  const frontmatter = [
-    "---",
-    `name: ${name}`,
-    `description: ${yamlStr(description)}`,
-    `model: inherit`,
-    `tools: ${tools}`,
-    "---",
-  ].join("\n");
-
+  const frontmatter = cfg.buildFrontmatter(name, description, tools);
   return { name, content: `${frontmatter}\n\n${body}` };
 }
 
-let agentCount = 0;
-for (const key of charKeys) {
-  const char = characters[key];
+function generateAgents(platform) {
+  const cfg = PLATFORMS[platform];
+  let agentCount = 0;
 
-  // Base (read-only) agent
-  const base = buildAgentMarkdown(key, char, false);
-  writeOutput(`agents/${base.name}.md`, base.content);
-  agentCount++;
+  for (const key of charKeys) {
+    const char = characters[key];
 
-  // Engineer variant (if applicable)
-  if (!NO_ENGINEER.has(key)) {
-    const eng = buildAgentMarkdown(key, char, true);
-    writeOutput(`agents/${eng.name}.md`, eng.content);
+    // Base (read-only) agent
+    const base = buildAgentMarkdown(key, char, false, platform);
+    writeOutput(cfg.outDir, `agents/${base.name}.md`, base.content);
     agentCount++;
+
+    // Engineer variant (if applicable)
+    if (!NO_ENGINEER.has(key)) {
+      const eng = buildAgentMarkdown(key, char, true, platform);
+      writeOutput(cfg.outDir, `agents/${eng.name}.md`, eng.content);
+      agentCount++;
+    }
   }
+
+  return agentCount;
 }
 
 // ── Generate roster skill ────────────────────────────────────
 
-function buildRosterSkill() {
+function buildRosterSkill(platform) {
+  const cfg = PLATFORMS[platform];
+
   const rows = charKeys.map(key => {
     const c = characters[key];
     const slug = key.replace(/_/g, "-");
@@ -196,9 +255,9 @@ function buildRosterSkill() {
 | \`full_avengers\` | Iron Man, Black Widow, Captain America, Deadpool, Thor, Doctor Strange, Wolverine, Peter W. | Maximum coverage |
 
 ## Usage Tips
-- Say "have Iron Man review my architecture" → Claude delegates to \`marvel-ironman\`
-- Say "fix this as Scarlet Witch" → Claude delegates to \`marvel-scarlet-witch-engineer\`
-- Start a full session: \`claude --agent marvel-deadpool\`
+- Say "have Iron Man review my architecture" → ${cfg.delegateVerb} \`marvel-ironman\`
+- Say "fix this as Scarlet Witch" → ${cfg.delegateVerb} \`marvel-scarlet-witch-engineer\`
+- Start a full session: \`${cfg.agentCmd("deadpool")}\`
 - Use the \`marvel-assemble\` skill for team reviews
 `;
 
@@ -210,7 +269,7 @@ description: Display all available Marvel character agents, their specialties, a
 
 # 🦸 Marvel Agents Roster
 
-${charKeys.length} characters available as Claude Code subagents. Each has a **review** variant (read-only analysis) and most have an **engineer** variant (full read/write/execute access).
+${charKeys.length} characters available as ${cfg.platformName} ${cfg.subagentTerm}. Each has a **review** variant (read-only analysis) and most have an **engineer** variant (full read/write/execute access).
 
 | | Character | Alias | Specialty | Agent Names |
 |---|-----------|-------|-----------|-------------|
@@ -218,11 +277,11 @@ ${rows.join("\n")}
 ${presets}`;
 }
 
-writeOutput("skills/marvel-roster/SKILL.md", buildRosterSkill());
-
 // ── Generate assemble skill ──────────────────────────────────
 
-function buildAssembleSkill() {
+function buildAssembleSkill(platform) {
+  const cfg = PLATFORMS[platform];
+
   return `${GENERATED_BANNER}
 ---
 name: marvel-assemble
@@ -231,13 +290,13 @@ description: "Launch a multi-agent Marvel review. Multiple character agents anal
 
 # ⚔️ Marvel Assemble — Multi-Agent Review
 
-When this skill is invoked, orchestrate a parallel review using Marvel character subagents.
+When this skill is invoked, orchestrate a parallel review using Marvel character ${cfg.subagentTerm}.
 
 ## How to Execute
 
 1. **Identify the target** — the file, directory, code, or concept to review.
 2. **Identify the team** — either a preset name or a custom list of characters.
-3. **Delegate to each character's subagent** in parallel (use background agents if available).
+3. **Delegate to each character's agent** in parallel (use background agents if available).
 4. **Collect all responses.**
 5. **Synthesize as The Watcher** — provide a unified summary that identifies:
    - Points of agreement across agents
@@ -302,12 +361,14 @@ I have observed [N] perspectives on [target].
 `;
 }
 
-writeOutput("skills/marvel-assemble/SKILL.md", buildAssembleSkill());
+// ── Generate plugin README ───────────────────────────────────
 
-// ── Generate README ──────────────────────────────────────────
+function buildPluginReadme(platform) {
+  const cfg = PLATFORMS[platform];
+  const engineerCount = charKeys.filter(k => !NO_ENGINEER.has(k)).length;
 
-function buildPluginReadme() {
-  return `${GENERATED_BANNER}
+  if (platform === "claude") {
+    return `${GENERATED_BANNER}
 # 🦸 Marvel Agents — Claude Code Plugin
 
 Summon Marvel characters as coding specialists in [Claude Code](https://docs.anthropic.com/en/docs/claude-code). Each character brings their own personality, specialty, and analysis framework.
@@ -360,7 +421,7 @@ Show me the Marvel roster
 
 ## Characters
 
-${charKeys.length} characters with review mode (read-only) and ${charKeys.filter(k => !NO_ENGINEER.has(k)).length} with engineer mode (full access).
+${charKeys.length} characters with review mode (read-only) and ${engineerCount} with engineer mode (full access).
 
 See the \`marvel-roster\` skill for the complete list and recommended team compositions.
 
@@ -369,28 +430,115 @@ See the \`marvel-roster\` skill for the complete list and recommended team compo
 All agent and skill files are auto-generated from \`characters.json\`. To regenerate:
 
 \`\`\`bash
-node scripts/generate-claude-code-plugin.mjs
+node scripts/generate-plugins.mjs --target claude
 \`\`\`
 
 To check if files are up-to-date (CI):
 
 \`\`\`bash
-node scripts/generate-claude-code-plugin.mjs --check
+node scripts/generate-plugins.mjs --target claude --check
+\`\`\`
+`;
+  }
+
+  // Copilot CLI plugin README
+  return `${GENERATED_BANNER}
+# 🦸 Marvel Agents — Copilot CLI Plugin
+
+Summon Marvel characters as coding specialists in [GitHub Copilot CLI](https://docs.github.com/en/copilot/github-copilot-in-the-cli). Each character brings their own personality, specialty, and analysis framework.
+
+## Install
+
+Install the plugin from the local directory:
+
+\`\`\`bash
+# From the repo root
+copilot plugin install ./copilot-cli-plugin
+\`\`\`
+
+Or copy the plugin files into your project's \`.github/\` directory:
+
+\`\`\`bash
+cp -r copilot-cli-plugin/.github/plugin .github/plugin
+cp -r copilot-cli-plugin/agents agents
+cp -r copilot-cli-plugin/skills skills
+\`\`\`
+
+## Usage
+
+**Delegate to a character:**
+\`\`\`
+Have Iron Man review my architecture in src/
+\`\`\`
+
+**Use the engineer variant for changes:**
+\`\`\`
+Fix this auth bug as Wolverine (engineer mode)
+\`\`\`
+
+**Browse available agents:**
+\`\`\`
+Show me the Marvel roster
+\`\`\`
+
+**Team review (assemble):**
+\`\`\`
+Use marvel-assemble with the code_review preset on src/api/
+\`\`\`
+
+## Characters
+
+${charKeys.length} characters with review mode (read-only) and ${engineerCount} with engineer mode (full access).
+
+See the \`marvel-roster\` skill for the complete list and recommended team compositions.
+
+## Generated Files
+
+All agent and skill files are auto-generated from \`characters.json\`. To regenerate:
+
+\`\`\`bash
+node scripts/generate-plugins.mjs --target copilot
+\`\`\`
+
+To check if files are up-to-date (CI):
+
+\`\`\`bash
+node scripts/generate-plugins.mjs --target copilot --check
 \`\`\`
 `;
 }
 
-writeOutput("README.md", buildPluginReadme());
+// ── Main generation ──────────────────────────────────────────
+
+function generatePlatform(platform) {
+  const cfg = PLATFORMS[platform];
+  console.log(`\nGenerating ${cfg.label} plugin → ${cfg.outDir.replace(ROOT + "/", "")}/`);
+
+  generateManifest(platform);
+  const agentCount = generateAgents(platform);
+  writeOutput(cfg.outDir, "skills/marvel-roster/SKILL.md", buildRosterSkill(platform));
+  writeOutput(cfg.outDir, "skills/marvel-assemble/SKILL.md", buildAssembleSkill(platform));
+  writeOutput(cfg.outDir, "README.md", buildPluginReadme(platform));
+
+  return agentCount;
+}
+
+const targets = TARGET === "both" ? ["claude", "copilot"] : [TARGET];
+let totalAgents = 0;
+
+for (const t of targets) {
+  totalAgents += generatePlatform(t);
+}
 
 // ── Summary ──────────────────────────────────────────────────
 
 if (CHECK_MODE) {
   if (checkFailed) {
-    console.error("\n❌ Claude Code plugin files are stale. Run: node scripts/generate-claude-code-plugin.mjs");
+    console.error(`\n❌ Plugin files are stale. Run: node scripts/generate-plugins.mjs`);
     process.exit(1);
   } else {
-    console.log("\n✅ All Claude Code plugin files are up-to-date.");
+    console.log(`\n✅ All plugin files are up-to-date for: ${targets.join(", ")}`);
   }
 } else {
-  console.log(`\n✅ Generated ${filesWritten} files (${agentCount} agents) in claude-code-plugin/`);
+  console.log(`\n✅ Generated ${totalFilesWritten} files (${totalAgents} agents) for: ${targets.join(", ")}`);
 }
